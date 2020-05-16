@@ -1,8 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="Neil">
     <words>
+      <w>bindable</w>
+      <w>coroutines</w>
       <w>gson</w>
       <w>mvrx</w>
+      <w>skywalker</w>
       <w>swipeable</w>
     </words>
   </dictionary>

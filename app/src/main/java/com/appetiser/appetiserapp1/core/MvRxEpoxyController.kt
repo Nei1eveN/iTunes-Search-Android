@@ -1,20 +1,29 @@
 package com.appetiser.appetiserapp1.core
 
-import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.epoxy.AsyncEpoxyController
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.mvrx.BaseMvRxViewModel
 import com.airbnb.mvrx.MvRxState
+import com.appetiser.appetiserapp1.core.activity.BindingMvRxActivity
 
 class MvRxEpoxyController(
     val buildModelsCallback: EpoxyController.() -> Unit = {}
 ) : AsyncEpoxyController() {
+
     override fun buildModels() {
         buildModelsCallback()
     }
 }
 
-fun <S : MvRxState, A : BaseMvRxViewModel<S>> AppCompatActivity.simpleController(
+fun BindingMvRxActivity<*>.simpleController(
+    buildModels: EpoxyController.() -> Unit
+) = MvRxEpoxyController{
+    if (isFinishing) return@MvRxEpoxyController
+    buildModels()
+}
+
+
+fun <S : MvRxState, A : BaseMvRxViewModel<S>> BindingMvRxActivity<*>.simpleController(
     viewModel: A,
     buildModels: EpoxyController.(state: S) -> Unit
 ) = MvRxEpoxyController {

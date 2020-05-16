@@ -16,18 +16,26 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/gotham_bold</item>
         <item name="android:textSize">@dimen/track_title_text_size</item>
-        <item name="android:paddingTop">@dimen/activity_horizontal_padding_default</item>
-        <item name="android:paddingBottom">@dimen/activity_horizontal_padding_default</item>
-        <item name="android:paddingEnd">@dimen/activity_horizontal_padding_default</item>
+        <item name="android:padding">@dimen/activity_horizontal_padding_default</item>
     </style>
 
     <style name="AppTheme.TitleHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/gotham_ultra</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/gotham_bold</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/header_text_size</item>
-        <item name="android:padding">@dimen/activity_horizontal_padding_default</item>
+        <item name="android:padding">@dimen/activity_horizontal_margin_default</item>
+    </style>
+
+    <style name="AppTheme.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/gotham_bold</item>
+        <item name="android:textColor">@color/lightGreen</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:padding">@dimen/activity_horizontal_margin_default</item>
     </style>
 
 </resources>

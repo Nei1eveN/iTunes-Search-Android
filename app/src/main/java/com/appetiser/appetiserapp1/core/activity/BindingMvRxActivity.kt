@@ -1,17 +1,15 @@
-package com.appetiser.appetiserapp1.core
+package com.appetiser.appetiserapp1.core.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.MvRxViewId
 
-abstract class BindingEpoxyActivity<B : ViewDataBinding> : AppCompatActivity(), MvRxView {
+abstract class BindingMvRxActivity<B : ViewDataBinding> : BaseActivity(), MvRxView {
 
     private val mvrxViewIdProperty = MvRxViewId()
     final override val mvrxViewId: String by mvrxViewIdProperty
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mvrxViewIdProperty.restoreFrom(savedInstanceState)
@@ -35,5 +33,4 @@ abstract class BindingEpoxyActivity<B : ViewDataBinding> : AppCompatActivity(), 
     open fun bind(layoutResID: Int) {
         binding = DataBindingUtil.setContentView(this, layoutResID)
     }
-
 }

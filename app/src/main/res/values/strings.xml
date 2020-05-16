@@ -2,5 +2,8 @@
     <string name="app_name">iTunes Track Search</string>
     <string name="track_placeholder_name">Track Name</string>
 
-    <string name="previously_visited">Previously Visited Tracks</string>
+    <string name="previously_visited">Visited Tracks</string>
+    <string name="show_more">Show All</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

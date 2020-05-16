@@ -6,22 +6,26 @@
     <data>
 
         <variable
-            name="item"
-            type="com.appetiser.appetiserapp1.data.Track" />
+            name="imageUrl"
+            type="String" />
+
+        <variable
+            name="trackTitle"
+            type="String" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/activity_horizontal_margin_default">
+        android:layout_width="130dp"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/trackImage"
-            android:layout_width="0dp"
-            android:layout_height="110dp"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
             android:contentDescription="@null"
-            app:imageSource100="@{item}"
+            android:scaleType="centerInside"
+            app:imageTrackUrl="@{imageUrl}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +33,10 @@
 
         <TextView
             style="@style/AppTheme.TrackTitle"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:text="@{trackTitle}"
+            app:layout_constraintEnd_toEndOf="@+id/trackImage"
             app:layout_constraintStart_toStartOf="@+id/trackImage"
             app:layout_constraintTop_toBottomOf="@id/trackImage"
             tools:text="@string/track_placeholder_name" />

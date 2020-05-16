@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="headerText"
+            type="String" />
+
+        <variable
+            name="showViewMore"
+            type="Boolean" />
+
+        <variable
+            name="onClick"
+            type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/previousVisitedHeader"
+            style="@style/AppTheme.TitleHeader"
+            android:layout_width="0dp"
+            android:text="@{headerText}"
+            app:layout_constraintEnd_toStartOf="@+id/showAllButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/previously_visited" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/showAllButton"
+            style="@style/AppTheme.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:onClick="@{onClick}"
+            android:text="@string/show_more"
+            android:textAllCaps="true"
+            android:visibility="@{showViewMore ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/previousVisitedHeader"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

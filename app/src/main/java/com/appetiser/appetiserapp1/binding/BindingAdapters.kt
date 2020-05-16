@@ -3,23 +3,16 @@ package com.appetiser.appetiserapp1.binding
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.appetiser.appetiserapp1.R
-import com.appetiser.appetiserapp1.data.Track
 import com.bumptech.glide.Glide
 
-@BindingAdapter("imageSource100")
-fun setImageTrackUrl100(imageView: ImageView, track: Track?) {
+@BindingAdapter("imageTrackUrl")
+fun setImageTrackUrl(imageView: ImageView, trackUrl: String?) {
     if (imageView.context == null) return
 
-    track?.takeIf { it.isValid }
-        ?.let { thisTrack ->
-
-            val imageUrl = when {
-                thisTrack.artworkUrl100.isNotEmpty() -> thisTrack.artworkUrl100
-                else -> R.drawable.ic_audiotrack_light_green_96dp
-            }
-
+    trackUrl?.takeIf { it.isNotEmpty() }
+        ?.let { url ->
             Glide.with(imageView.context)
-                .load(imageUrl)
+                .load(url)
                 .centerInside()
                 .placeholder(R.drawable.ic_audiotrack_light_green_96dp)
                 .into(imageView)
