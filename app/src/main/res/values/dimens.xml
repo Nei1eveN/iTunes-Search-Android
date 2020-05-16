@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="activity_horizontal_margin_default">16dp</dimen>
+    <dimen name="activity_horizontal_padding_default">8dp</dimen>
+
+    <dimen name="track_title_text_size">14sp</dimen>
+
+    <dimen name="header_text_size">20sp</dimen>
+
+</resources>

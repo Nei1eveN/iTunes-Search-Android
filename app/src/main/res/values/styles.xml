@@ -1,0 +1,33 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:background">@color/black</item>
+        <!--<item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>-->
+    </style>
+
+    <style name="AppTheme.TrackTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/gotham_bold</item>
+        <item name="android:textSize">@dimen/track_title_text_size</item>
+        <item name="android:paddingTop">@dimen/activity_horizontal_padding_default</item>
+        <item name="android:paddingBottom">@dimen/activity_horizontal_padding_default</item>
+        <item name="android:paddingEnd">@dimen/activity_horizontal_padding_default</item>
+    </style>
+
+    <style name="AppTheme.TitleHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/gotham_ultra</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/header_text_size</item>
+        <item name="android:padding">@dimen/activity_horizontal_padding_default</item>
+    </style>
+
+</resources>
