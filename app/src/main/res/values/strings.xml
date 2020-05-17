@@ -9,4 +9,20 @@
 
     <string name="track_details">Track Details</string>
     <string name="search">Search</string>
+    <string name="search_track">Search a Track by entering the words to the search field</string>
+
+    <string name="tracks_not_found">Tracks Not Found.</string>
+    <string name="country">Country</string>
+    <string name="country_code_hint">Country Code</string>
+
+    <string-array name="preset_country_codes">
+        <item>AU</item>
+        <item>US</item>
+    </string-array>
+
+    <string-array name="preset_country_names">
+        <item>Australia</item>
+        <item>United States</item>
+    </string-array>
+
 </resources>

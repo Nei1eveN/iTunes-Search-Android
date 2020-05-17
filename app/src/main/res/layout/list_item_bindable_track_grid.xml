@@ -12,6 +12,14 @@
         <variable
             name="trackTitle"
             type="String" />
+        
+        <variable
+            name="trackPrice"
+            type="String" />
+        
+        <variable
+            name="trackGenre"
+            type="String" />
 
         <variable
             name="onClick"
@@ -38,6 +46,7 @@
             tools:src="@drawable/ic_audiotrack_light_green_96dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/titleText"
             style="@style/AppTheme.TrackTitle"
             android:layout_width="0dp"
             android:autoSizeTextType="uniform"
@@ -46,8 +55,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/trackImage"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="@string/track_placeholder_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/trackPrice"
+            style="@style/AppTheme.TrackDescription"
+            android:layout_width="0dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="@{trackPrice}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleText"
+            tools:text="Price" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/AppTheme.TrackDescription"
+            android:layout_width="0dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="@{trackGenre}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trackPrice"
+            tools:text="Genre" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

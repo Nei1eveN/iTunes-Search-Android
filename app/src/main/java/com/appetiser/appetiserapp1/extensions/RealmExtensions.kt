@@ -1,10 +1,17 @@
 package com.appetiser.appetiserapp1.extensions
 
+import io.reactivex.internal.subscriptions.SubscriptionHelper.cancel
+import io.realm.OrderedRealmCollectionChangeListener
 import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmModel
 import io.realm.RealmObject
+import io.realm.RealmObjectChangeListener
 import io.realm.RealmResults
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 import org.intellij.lang.annotations.Flow
 
 fun <T : RealmObject> T.toUnmanaged(): T {
@@ -25,23 +32,26 @@ inline fun <reified T : RealmModel> Realm.find(primaryKeyValue: Int): T? {
     return this.where(T::class.java).equalTo(primaryKey, primaryKeyValue).findFirst()
 }
 
-/**
- * Returns flow of un-managed realm data
- *
- * @return a type `Flow`, which can be used to observe realm notifications.
- */
-/*
-@ExperimentalCoroutinesApi
-fun <T : RealmObject> RealmResults<T>.asCallbackFlow(): Flow<List<T>> {
-    return callbackFlow {
-        val listener = RealmChangeListener<RealmResults<T>> { results ->
-            offer(results.map { it.toUnmanaged() }.toList())
-        }
-        this@asCallbackFlow.addChangeListener(listener)
+fun <T : RealmObject> RealmResults<T>.asCallbackFlow() = callbackFlow {
+    val listener = OrderedRealmCollectionChangeListener<RealmResults<T>> { results, _ ->
+        offer(results.map { it.toUnmanaged() })
+    }
+    this@asCallbackFlow.addChangeListener(listener)
+    awaitClose {
+        this@asCallbackFlow.removeChangeListener(listener)
+        cancel("$this closed")
+    }
+}
 
-        awaitClose {
-            this@asCallbackFlow.removeChangeListener(listener)
-            cancel("$this closed")
+fun <T : RealmObject> T.asCallbackFlow() = callbackFlow {
+    val listener = RealmObjectChangeListener<T> { managedObject, _ ->
+        if (managedObject.isValid) {
+            offer(managedObject.toUnmanaged())
         }
     }
-}*/
+    this@asCallbackFlow.addChangeListener(listener)
+    awaitClose {
+        this@asCallbackFlow.removeChangeListener(listener)
+        cancel("$this closed")
+    }
+}

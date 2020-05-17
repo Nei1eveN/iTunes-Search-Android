@@ -1,4 +1,4 @@
-package com.appetiser.appetiserapp1.data
+package com.appetiser.appetiserapp1.data.model
 
 import io.realm.RealmList
 import io.realm.RealmObject

@@ -5,8 +5,10 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
 
     private var activityResultListener: ((resultCode: Int, data: Intent?) -> Unit)? = null
     private var activityResultRequestCode: Int = 0
@@ -15,6 +17,12 @@ abstract class BaseActivity : AppCompatActivity() {
     private var permissionDenied: (() -> Unit)? = null
 
     private var currentFragmentName = ""
+
+    lateinit var binding: B
+
+    open fun bind(layoutResID: Int) {
+        binding = DataBindingUtil.setContentView(this, layoutResID)
+    }
 
     open fun changeFragment(
         fragment: androidx.fragment.app.Fragment,
@@ -74,6 +82,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     companion object {
         private const val PERMISSIONS_REQUEST = 111
-        private val TAG = BindingMvRxActivity::class.java.simpleName
+        private val TAG = BaseActivity::class.java.simpleName
     }
 }

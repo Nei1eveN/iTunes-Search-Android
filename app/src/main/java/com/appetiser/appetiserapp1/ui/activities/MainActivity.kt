@@ -3,12 +3,10 @@ package com.appetiser.appetiserapp1.ui.activities
 import android.os.Bundle
 import androidx.navigation.findNavController
 import com.appetiser.appetiserapp1.R
-import com.appetiser.appetiserapp1.core.activity.BindingMvRxActivity
+import com.appetiser.appetiserapp1.core.activity.BaseActivity
 import com.appetiser.appetiserapp1.databinding.ActivityMainBinding
 
-class MainActivity : BindingMvRxActivity<ActivityMainBinding>() {
-
-    override fun invalidate() {}
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private val navigationController by lazy {
         findNavController(R.id.nav_host_fragment)
