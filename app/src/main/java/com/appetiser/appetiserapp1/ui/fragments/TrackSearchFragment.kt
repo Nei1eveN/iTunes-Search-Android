@@ -1,27 +1,24 @@
 package com.appetiser.appetiserapp1.ui.fragments
 
-import android.os.Bundle
-import android.view.View
+import androidx.fragment.app.Fragment
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.appetiser.appetiserapp1.R
 import com.appetiser.appetiserapp1.core.EpoxyFragment
 import com.appetiser.appetiserapp1.core.simpleController
-import com.appetiser.appetiserapp1.databinding.FragmentTrackDetailBinding
+import com.appetiser.appetiserapp1.databinding.FragmentTrackSearchBinding
 
-class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
+/**
+ * A simple [Fragment] subclass.
+ */
+class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
 
     override val recyclerView: EpoxyRecyclerView
         get() = binding.epoxyRecyclerView
 
     override val layoutId: Int
-        get() = R.layout.fragment_track_detail
+        get() = R.layout.fragment_track_search
 
     override fun epoxyController() = simpleController {
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
     }
 }

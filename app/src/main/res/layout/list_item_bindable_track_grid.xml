@@ -13,11 +13,17 @@
             name="trackTitle"
             type="String" />
 
+        <variable
+            name="onClick"
+            type="android.view.View.OnClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="130dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{onClick}">
 
         <ImageView
             android:id="@+id/trackImage"
@@ -31,14 +37,16 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_audiotrack_light_green_96dp" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             style="@style/AppTheme.TrackTitle"
             android:layout_width="0dp"
+            android:autoSizeTextType="uniform"
             android:gravity="center"
             android:text="@{trackTitle}"
-            app:layout_constraintEnd_toEndOf="@+id/trackImage"
-            app:layout_constraintStart_toStartOf="@+id/trackImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/trackImage"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="@string/track_placeholder_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
