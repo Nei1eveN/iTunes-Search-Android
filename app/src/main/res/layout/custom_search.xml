@@ -53,12 +53,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/searchTextLayout">
 
-                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                <com.appetiser.appetiserapp1.ui.views.NonEditableAutoCompleteTextView
                     android:id="@+id/countryText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:enabled="false"
                     android:fontFamily="@font/gotham_bold"
                     android:singleLine="true" />
 

@@ -1,4 +1,4 @@
-package com.appetiser.appetiserapp1.core
+package com.appetiser.appetiserapp1.data.network
 
 import com.appetiser.appetiserapp1.core.network.DateSerializer
 import com.appetiser.appetiserapp1.core.network.GsonRealmBuilder
@@ -21,6 +21,8 @@ class SearchApiClient() : Interceptor {
 
     private val client: OkHttpClient
     private val retrofit: Retrofit
+
+    private var service: SearchAPI? = null
 
     init {
         val logging = HttpLoggingInterceptor()
@@ -67,6 +69,12 @@ class SearchApiClient() : Interceptor {
         val request = builder.build()
 
         return chain.proceed(request)
+    }
+
+    fun getService(): SearchAPI {
+        if (service == null)
+            service = retrofit.create(SearchAPI::class.java)
+        return service!!
     }
 
     companion object {
