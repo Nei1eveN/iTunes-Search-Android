@@ -80,6 +80,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     // gson
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    // logging interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:4.6.0"
 
     // kotlin coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"

@@ -1,11 +1,12 @@
-package com.appetiser.appetiserapp1.data
+package com.appetiser.appetiserapp1.data.model
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import java.util.Date
 
 open class Track(
-
+    @PrimaryKey
+    var trackId: Int = 0,
     var artistId: Int = 0,
     var artistName: String = "",
     var artistViewUrl: String = "",
@@ -41,8 +42,6 @@ open class Track(
     var trackExplicitness: String = "",
     var trackHdPrice: Double = 0.0,
     var trackHdRentalPrice: Double = 0.0,
-    @PrimaryKey
-    var trackId: Int = 0,
     var trackName: String = "",
     var trackNumber: Int = 0,
     var trackPrice: Double = 0.0,
