@@ -24,6 +24,7 @@
 
 
         <com.appetiser.appetiserapp1.ui.views.NonSwipeableRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
