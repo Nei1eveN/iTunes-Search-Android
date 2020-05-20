@@ -4,9 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.appetiser.appetiserapp1.core.MvRxViewModel
 import com.appetiser.appetiserapp1.data.model.Track
 import com.appetiser.appetiserapp1.data.repository.TrackRepository
+import com.nei1even.adrcodingchallengelibrary.core.mvrx.MvRxViewModel
 import io.realm.Realm
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -24,9 +24,10 @@ class TrackListFragmentVM(
 
     init {
         viewModelScope.launch {
-            repository.getTracks().collect { setTracks(it) }
+            repository.getTracks().collect {
+                setTracks(it)
+            }
         }
-
     }
 
     private fun setTracks(tracks: List<Track>) {

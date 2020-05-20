@@ -17,12 +17,12 @@ import com.appetiser.appetiserapp1.R
 import com.appetiser.appetiserapp1.bindableEmptyScreen
 import com.appetiser.appetiserapp1.bindableHeaderViewMore
 import com.appetiser.appetiserapp1.bindableTrackNormal
-import com.appetiser.appetiserapp1.core.EpoxyFragment
-import com.appetiser.appetiserapp1.core.simpleController
 import com.appetiser.appetiserapp1.databinding.FragmentTrackSearchBinding
-import com.appetiser.appetiserapp1.extensions.hideKeyboard
-import com.appetiser.appetiserapp1.extensions.makeSafeSnackbar
 import com.google.android.material.snackbar.Snackbar
+import com.nei1even.adrcodingchallengelibrary.core.binding.EpoxyFragment
+import com.nei1even.adrcodingchallengelibrary.core.extensions.hideKeyboard
+import com.nei1even.adrcodingchallengelibrary.core.extensions.makeSafeSnackbar
+import com.nei1even.adrcodingchallengelibrary.core.mvrx.simpleController
 
 /**
  * A simple [Fragment] subclass.
@@ -207,13 +207,6 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                         }
                     }
                 }
-            }
-        } else {
-            bindableEmptyScreen {
-                id("emptyScreen")
-                text(getString(R.string.tracks_not_found))
-                buttonVisible(false)
-                onClick { _ -> }
             }
         }
     }

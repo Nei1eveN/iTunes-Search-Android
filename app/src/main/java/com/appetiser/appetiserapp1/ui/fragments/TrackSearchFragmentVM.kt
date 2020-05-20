@@ -6,12 +6,12 @@ import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
-import com.appetiser.appetiserapp1.core.MvRxViewModel
-import com.appetiser.appetiserapp1.core.awaitAsync
 import com.appetiser.appetiserapp1.data.model.SearchResult
 import com.appetiser.appetiserapp1.data.model.Track
 import com.appetiser.appetiserapp1.data.repository.TrackRepository
-import com.appetiser.appetiserapp1.extensions.toUnmanaged
+import com.nei1even.adrcodingchallengelibrary.core.extensions.toUnmanaged
+import com.nei1even.adrcodingchallengelibrary.core.mvrx.MvRxViewModel
+import com.nei1even.adrcodingchallengelibrary.core.network.awaitAsync
 import io.realm.Realm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

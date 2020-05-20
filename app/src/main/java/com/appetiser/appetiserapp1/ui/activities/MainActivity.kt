@@ -3,8 +3,8 @@ package com.appetiser.appetiserapp1.ui.activities
 import android.os.Bundle
 import androidx.navigation.findNavController
 import com.appetiser.appetiserapp1.R
-import com.appetiser.appetiserapp1.core.activity.BaseActivity
 import com.appetiser.appetiserapp1.databinding.ActivityMainBinding
+import com.nei1even.adrcodingchallengelibrary.core.activity.BaseActivity
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 

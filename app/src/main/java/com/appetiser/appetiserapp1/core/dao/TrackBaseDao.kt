@@ -1,5 +1,6 @@
 package com.appetiser.appetiserapp1.core.dao
 
+import com.nei1even.adrcodingchallengelibrary.core.dao.DaoImpl
 import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.RealmResults

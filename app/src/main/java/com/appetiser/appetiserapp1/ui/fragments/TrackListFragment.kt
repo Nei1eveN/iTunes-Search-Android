@@ -12,10 +12,10 @@ import com.appetiser.appetiserapp1.BindableTrackGridBindingModel_
 import com.appetiser.appetiserapp1.R
 import com.appetiser.appetiserapp1.bindableEmptyScreen
 import com.appetiser.appetiserapp1.bindableHeaderViewMore
-import com.appetiser.appetiserapp1.core.EpoxyFragment
-import com.appetiser.appetiserapp1.core.simpleController
 import com.appetiser.appetiserapp1.databinding.FragmentTrackListBinding
 import com.appetiser.appetiserapp1.ui.activities.MainActivity
+import com.nei1even.adrcodingchallengelibrary.core.binding.EpoxyFragment
+import com.nei1even.adrcodingchallengelibrary.core.mvrx.simpleController
 import kotlinx.android.synthetic.main.toolbar_main.view.toolbar
 
 /**
