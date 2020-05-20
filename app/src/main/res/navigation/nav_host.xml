@@ -26,5 +26,9 @@
         android:id="@+id/trackSearchFragment"
         android:name="com.appetiser.appetiserapp1.ui.fragments.TrackSearchFragment"
         android:label="fragment_track_search"
-        tools:layout="@layout/fragment_track_search" />
+        tools:layout="@layout/fragment_track_search" >
+        <action
+            android:id="@+id/action_trackSearchFragment_to_trackDetailFragment"
+            app:destination="@id/trackDetailFragment" />
+    </fragment>
 </navigation>

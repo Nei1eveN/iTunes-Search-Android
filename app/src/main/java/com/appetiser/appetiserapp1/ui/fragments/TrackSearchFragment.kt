@@ -16,7 +16,6 @@ import com.appetiser.appetiserapp1.BindableTrackGridBindingModel_
 import com.appetiser.appetiserapp1.R
 import com.appetiser.appetiserapp1.bindableEmptyScreen
 import com.appetiser.appetiserapp1.bindableHeaderViewMore
-import com.appetiser.appetiserapp1.bindableTrackGrid
 import com.appetiser.appetiserapp1.bindableTrackNormal
 import com.appetiser.appetiserapp1.core.EpoxyFragment
 import com.appetiser.appetiserapp1.core.simpleController
@@ -83,7 +82,9 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                 .trackTitle(it.collectionName)
                                 .trackPrice("Collection Price: ${it.collectionPrice}")
                                 .trackGenre(it.primaryGenreName)
-                                .onClick { _ -> }
+                                .onClick { _ ->
+                                    viewModel.viewDetails(it)
+                                }
                         }.let { models(it) }
                         numViewsToShowOnScreen(if (moreThanOne) 1f else 0f)
                     }
@@ -95,7 +96,9 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                             trackTitle(it.collectionName)
                             trackPrice("Collection Price: ${it.collectionPrice}")
                             trackPrice(it.primaryGenreName)
-                            onClick { _ -> }
+                            onClick { _ ->
+                                viewModel.viewDetails(it)
+                            }
                         }
                     }
                 }
@@ -130,7 +133,9 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                     .trackTitle(it.collectionName)
                                     .trackPrice("Collection Price: ${it.collectionPrice}")
                                     .trackGenre(it.primaryGenreName)
-                                    .onClick { _ -> }
+                                    .onClick { _ ->
+                                        viewModel.viewDetails(it)
+                                    }
                             }.let { models(it) }
                             numViewsToShowOnScreen(if (moreThanOne) 1f else 0f)
                         }
@@ -145,7 +150,9 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                 trackTitle(title)
                                 trackPrice(price.toString())
                                 trackPrice(it.primaryGenreName)
-                                onClick { _ -> }
+                                onClick { _ ->
+                                    viewModel.viewDetails(it)
+                                }
                             }
                         }
                     }
@@ -176,7 +183,9 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                     .trackTitle(it.collectionName)
                                     .trackPrice("Collection Price: ${it.collectionPrice}")
                                     .trackGenre(it.primaryGenreName)
-                                    .onClick { _ -> }
+                                    .onClick { _ ->
+                                        viewModel.viewDetails(it)
+                                    }
                             }.let { models(it) }
                             numViewsToShowOnScreen(if (moreThanOne) 1f else 0f)
                         }
@@ -191,7 +200,9 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                 trackTitle(title)
                                 trackPrice(price.toString())
                                 trackPrice(it.primaryGenreName)
-                                onClick { _ -> }
+                                onClick { _ ->
+                                    viewModel.viewDetails(it)
+                                }
                             }
                         }
                     }
@@ -214,8 +225,22 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
             val searchText = searchToolbar.searchText
             val countryDropdown = searchToolbar.countryText
 
-            viewModel.selectSubscribe(SearchState::isLoading) {
-                swipeRefresh.isRefreshing = it
+            viewModel.run {
+                selectSubscribe(SearchState::isLoading) {
+                    swipeRefresh.isRefreshing = it
+                }
+
+                selectSubscribe(SearchState::item) {
+                    it?.let {
+                        val title = when {
+                            it.trackName.isNotEmpty() -> it.trackName
+                            it.trackCensoredName.isNotEmpty() -> it.trackCensoredName
+                            it.collectionName.isNotEmpty() -> it.collectionName
+                            else -> it.collectionCensoredName
+                        }
+                        Toast.makeText(activity, title, Toast.LENGTH_LONG).show()
+                    }
+                }
             }
 
             searchText.run {

@@ -8,7 +8,6 @@ import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.epoxy.carousel
 import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
 import com.appetiser.appetiserapp1.BindableTrackGridBindingModel_
 import com.appetiser.appetiserapp1.R
 import com.appetiser.appetiserapp1.bindableEmptyScreen
@@ -43,33 +42,35 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                     navigateTo(R.id.trackSearchFragment)
                 }
             }
-        }
-        val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited }.size
-        val moreThanOneVisited = previouslyVisitedTracks > 1
-        if (previouslyVisitedTracks > 0) {
-            bindableHeaderViewMore {
-                id("previouslyVisited")
-                headerText(getString(R.string.previously_visited))
-                showViewMore(moreThanOneVisited)
-                onClick { view ->
-                    Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
+        } else {
+            val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited }
+            val atLeastOneVisited = previouslyVisitedTracks.isNotEmpty()
+            val moreThanThree = previouslyVisitedTracks.size > 3
+            if (atLeastOneVisited) {
+                bindableHeaderViewMore {
+                    id("previouslyVisited")
+                    headerText(getString(R.string.previously_visited))
+                    showViewMore(moreThanThree)
+                    onClick { view ->
+                        Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            carousel {
-                id("previousVisitedCarousel")
-                padding(Carousel.Padding.dp(0,4,0,16,1))
-                hasFixedSize(true)
-                state.tracks.filter { it.previouslyVisited }.map {
-                    BindableTrackGridBindingModel_()
-                        .id(it.trackId)
-                        .imageUrl(it.artworkUrl100)
-                        .trackTitle(it.trackName)
-                        .trackPrice(it.trackPrice.toString())
-                        .trackGenre(it.primaryGenreName)
-                        .onClick { _ -> }
-                }.let { models(it) }
-                numViewsToShowOnScreen(if (moreThanOneVisited) 1f else 0f)
+                carousel {
+                    id("previousVisitedCarousel")
+                    padding(Carousel.Padding.dp(0,4,0,16,1))
+                    hasFixedSize(true)
+                    previouslyVisitedTracks.map {
+                        BindableTrackGridBindingModel_()
+                            .id(it.trackId)
+                            .imageUrl(it.artworkUrl100)
+                            .trackTitle(it.trackName)
+                            .trackPrice(it.trackPrice.toString())
+                            .trackGenre(it.primaryGenreName)
+                            .onClick { _ -> }
+                    }.let { models(it) }
+                    numViewsToShowOnScreen(if (atLeastOneVisited) 1f else 0f)
+                }
             }
         }
     }
@@ -78,10 +79,12 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         val addButton = (activity as MainActivity).binding.addButton
-        withState(viewModel) {
-            when {
-                it.tracks.isEmpty() -> addButton.hide()
-                else -> addButton.show()
+        viewModel.run {
+            selectSubscribe(TrackState::tracks) {
+                when {
+                    it.isEmpty() -> addButton.hide()
+                    else -> addButton.show()
+                }
             }
         }
 

@@ -31,6 +31,7 @@
             android:onClick="@{fabOnClick}"
             android:src="@drawable/ic_playlist_add"
             android:visibility="visible"
+            app:backgroundTint="@color/lightGreenPrimaryDark"
             app:layout_anchor="@id/nav_host_fragment"
             app:layout_anchorGravity="bottom|end"
             app:useCompatPadding="true" />
