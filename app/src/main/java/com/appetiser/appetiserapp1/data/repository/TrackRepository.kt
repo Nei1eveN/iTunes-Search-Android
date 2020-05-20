@@ -1,11 +1,11 @@
 package com.appetiser.appetiserapp1.data.repository
 
-import com.appetiser.appetiserapp1.core.dao.RealmBaseRepository
 import com.appetiser.appetiserapp1.data.dao.TrackDao
 import com.appetiser.appetiserapp1.data.model.SearchResult
 import com.appetiser.appetiserapp1.data.model.Track
 import com.appetiser.appetiserapp1.data.network.SearchApiClient
-import com.appetiser.appetiserapp1.extensions.asCallbackFlow
+import com.nei1even.adrcodingchallengelibrary.core.dao.RealmBaseRepository
+import com.nei1even.adrcodingchallengelibrary.core.extensions.asCallbackFlow
 import io.realm.Realm
 import retrofit2.Call
 

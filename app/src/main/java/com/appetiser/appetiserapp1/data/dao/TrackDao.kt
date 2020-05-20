@@ -2,7 +2,7 @@ package com.appetiser.appetiserapp1.data.dao
 
 import com.appetiser.appetiserapp1.core.dao.TrackBaseDao
 import com.appetiser.appetiserapp1.data.model.Track
-import com.appetiser.appetiserapp1.extensions.find
+import com.nei1even.adrcodingchallengelibrary.core.extensions.find
 import io.realm.Realm
 import io.realm.kotlin.where
 
