@@ -7,13 +7,15 @@ import androidx.fragment.app.Fragment
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.epoxy.carousel
-import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.activityViewModel
 import com.appetiser.appetiserapp1.BindableTrackGridBindingModel_
 import com.appetiser.appetiserapp1.R
 import com.appetiser.appetiserapp1.bindableEmptyScreen
 import com.appetiser.appetiserapp1.bindableHeaderViewMore
 import com.appetiser.appetiserapp1.databinding.FragmentTrackListBinding
 import com.appetiser.appetiserapp1.ui.activities.MainActivity
+import com.appetiser.appetiserapp1.ui.activities.MainActivityVM
+import com.appetiser.appetiserapp1.ui.activities.TrackState
 import com.nei1even.adrcodingchallengelibrary.core.binding.EpoxyFragment
 import com.nei1even.adrcodingchallengelibrary.core.mvrx.simpleController
 import kotlinx.android.synthetic.main.toolbar_main.view.toolbar
@@ -23,7 +25,7 @@ import kotlinx.android.synthetic.main.toolbar_main.view.toolbar
  */
 class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
 
-    private val viewModel: TrackListFragmentVM by fragmentViewModel()
+    private val viewModel: MainActivityVM by activityViewModel()
 
     override val recyclerView: EpoxyRecyclerView
         get() = binding.epoxyRecyclerView
@@ -32,7 +34,6 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
         get() = R.layout.fragment_track_list
 
     override fun epoxyController() = simpleController(viewModel) { state ->
-
         if (state.tracks.isEmpty()) {
             bindableEmptyScreen {
                 id("emptyScreen")
@@ -67,7 +68,10 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                             .trackTitle(it.trackName)
                             .trackPrice(it.trackPrice.toString())
                             .trackGenre(it.primaryGenreName)
-                            .onClick { _ -> }
+                            .onClick { _ ->
+                                viewModel.viewDetails(it)
+                                navigateTo(R.id.action_trackListFragment_to_trackDetailFragment)
+                            }
                     }.let { models(it) }
                     numViewsToShowOnScreen(if (atLeastOneVisited) 1f else 0f)
                 }
@@ -91,5 +95,6 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
         binding.run {
             toolbarMain.toolbar.title = "Home"
         }
+
     }
 }
