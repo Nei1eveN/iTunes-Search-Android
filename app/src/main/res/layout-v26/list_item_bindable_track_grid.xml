@@ -12,11 +12,11 @@
         <variable
             name="trackTitle"
             type="String" />
-
+        
         <variable
             name="trackPrice"
             type="String" />
-
+        
         <variable
             name="trackGenre"
             type="String" />
@@ -49,8 +49,9 @@
             android:id="@+id/titleText"
             style="@style/AppTheme.TrackTitle"
             android:layout_width="0dp"
-            android:gravity="center"
+            android:autoSizeTextType="uniform"
             android:singleLine="true"
+            android:gravity="center"
             android:text="@{trackTitle}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +62,7 @@
             android:id="@+id/trackPrice"
             style="@style/AppTheme.TrackDescription"
             android:layout_width="0dp"
+            android:autoSizeTextType="uniform"
             android:gravity="center"
             android:text="@{trackPrice}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,6 +73,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/AppTheme.TrackDescription"
             android:layout_width="0dp"
+            android:autoSizeTextType="uniform"
             android:gravity="center"
             android:text="@{trackGenre}"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -1,15 +1,21 @@
 package com.appetiser.appetiserapp1.ui.activities
 
+import android.content.Context
 import android.os.Parcelable
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
+import com.appetiser.appetiserapp1.R
+import com.appetiser.appetiserapp1.core.extensions.navigateTo
 import com.appetiser.appetiserapp1.data.model.SearchResult
 import com.appetiser.appetiserapp1.data.model.Track
 import com.appetiser.appetiserapp1.data.repository.TrackRepository
+import com.appetiser.appetiserapp1.utils.Constants
 import com.nei1even.adrcodingchallengelibrary.core.extensions.toUnmanaged
 import com.nei1even.adrcodingchallengelibrary.core.mvrx.MvRxViewModel
 import com.nei1even.adrcodingchallengelibrary.core.network.awaitAsync
@@ -19,10 +25,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Date
 import java.util.UUID
 
 @Parcelize
-data class TrackDetailArgs(val trackId: Int) : Parcelable
+data class TrackDetailArgs(val trackId: Int = 0) : Parcelable
+
+@Parcelize
+data class MainActivityArgs(val trackId: Int = 0, val lastPageId: Int = 0) : Parcelable
 
 /**
  * State for the activity which can be accessed by fragments
@@ -35,6 +45,7 @@ data class TrackDetailArgs(val trackId: Int) : Parcelable
 data class TrackState(
     val lastViewedTrackId: Int? = null,
     val tracks: List<Track> = emptyList(),
+    val searchedTracks: List<Track> = emptyList(),
     val searchText: String = "",
     val searchResult: SearchResult = SearchResult(),
     val isLoading: Boolean = false,
@@ -43,13 +54,26 @@ data class TrackState(
 
 class MainActivityVM(
     initialState: TrackState,
-    private val repository: TrackRepository
+    private val repository: TrackRepository,
+    private val navigationController: NavController,
+    mainActivityArgs: MainActivityArgs
 ) : MvRxViewModel<TrackState>(initialState) {
 
     init {
         viewModelScope.launch {
             repository.getTracks().collect {
                 setTracks(it)
+            }
+        }
+
+        with(mainActivityArgs) {
+            when {
+                trackId > 0 && lastPageId == R.id.trackDetailFragment -> {
+                    navigationController.navigateTo(lastPageId, TrackDetailArgs(trackId = trackId))
+                }
+                lastPageId > 0 && lastPageId == R.id.trackSearchFragment -> {
+                    navigationController.navigate(lastPageId)
+                }
             }
         }
     }
@@ -99,7 +123,7 @@ class MainActivityVM(
 
     /**
      * set last viewed trackId to state
-     * @param trackId last viewed id from Track object
+     * @param trackId last viewed id from Track object or saved from sharedPreferences
      * */
     private fun setLastViewedTrackId(trackId: Int) {
         setState {
@@ -137,15 +161,14 @@ class MainActivityVM(
                     setState {
                         copy(item = newAudioBook)
                     }
-                    newAudioBook?.trackId?.let { setLastViewedTrackId(it) }
                 } else {
                     audioBook.apply {
                         previouslyVisited = true
+                        date = Date()
                     }
                     setState {
                         copy(item = audioBook)
                     }
-                    setLastViewedTrackId(audioBook.trackId)
                 }
             } else {
                 val otherTrack = repository.findById(item.trackId)?.toUnmanaged()
@@ -165,12 +188,25 @@ class MainActivityVM(
                 } else {
                     otherTrack.apply {
                         previouslyVisited = true
+                        date = Date()
                     }
                     setState {
                         copy(item = otherTrack)
                     }
-                    setLastViewedTrackId(otherTrack.trackId)
                 }
+            }
+        }
+    }
+
+    /**
+     * set [Track] value to state with trackId
+     * @param trackId to be queried from the repository
+     * */
+    fun viewDetails(trackId: Int) {
+        viewModelScope.launch {
+            val item = repository.findById(trackId)?.toUnmanaged()
+            setState {
+                copy(item = item)
             }
         }
     }
@@ -192,10 +228,18 @@ class MainActivityVM(
             viewModelContext: ViewModelContext,
             state: TrackState
         ): MainActivityVM? {
+            val navController = viewModelContext.activity.findNavController(R.id.nav_host_fragment)
+            val sharedPref = viewModelContext.activity.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
+            val trackId = sharedPref.getInt(Constants.TRACK_ID, 0)
+            val lastNavigatedPageId = sharedPref.getInt(Constants.LAST_NAVIGATED_PAGE, 0)
+            val mainActivityArgs = viewModelContext.args as? MainActivityArgs ?: MainActivityArgs(trackId, lastNavigatedPageId)
             val realm = Realm.getDefaultInstance()
+
             return MainActivityVM(
                 state,
-                TrackRepository(realm)
+                TrackRepository(realm),
+                navController,
+                mainActivityArgs
             )
         }
     }

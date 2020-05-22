@@ -51,4 +51,15 @@ open class Track(
     var wrapperType: String = "",
     var previouslyVisited: Boolean = false,
     var date: Date = Date()
-) : RealmObject()
+) : RealmObject() {
+    enum class WrapperType(val value: String) {
+        AUDIOBOOK("audiobook"),
+        TRACK("track")
+    }
+
+    enum class TrackKind(val value: String) {
+        FEATURE_MOVIE("feature-movie"),
+        SONG("song"),
+        TV_EPISODE("tv-episode")
+    }
+}

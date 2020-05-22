@@ -59,5 +59,8 @@ dependencies {
     def epoxyVersion = '3.10.0'
     kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
+    def glideVersion = "4.11.0"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
     implementation 'com.github.Nei1eveN:ADR-Coding-Challenge:1.0.0'
 }

@@ -12,6 +12,7 @@
     <!--Kinds-->
     <string name="song">Song</string>
     <string name="feature_movie">Feature Movie</string>
+    <string name="tv_episode">TV Episodes / TV Series</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -26,6 +27,7 @@
     <string name="country_code_hint">Country Code</string>
 
     <string-array name="preset_country_codes">
+        <item/>
         <item>AU</item>
         <item>US</item>
     </string-array>

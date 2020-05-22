@@ -8,6 +8,9 @@ import androidx.navigation.NavOptions
 import com.airbnb.mvrx.MvRx
 import com.appetiser.appetiserapp1.R
 
+/**
+ * Navigate function extension for navigation controller inside the Activity
+ * */
 @SuppressLint("PrivateResource")
 fun NavController.navigateTo(actionId: Int, arg: Parcelable? = null) {
     val bundle = arg?.let { Bundle().apply { putParcelable(MvRx.KEY_ARG, it) } }

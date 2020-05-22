@@ -1,10 +1,12 @@
 package com.appetiser.appetiserapp1.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.airbnb.epoxy.Carousel
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.epoxy.carousel
 import com.airbnb.mvrx.activityViewModel
@@ -16,6 +18,7 @@ import com.appetiser.appetiserapp1.databinding.FragmentTrackListBinding
 import com.appetiser.appetiserapp1.ui.activities.MainActivity
 import com.appetiser.appetiserapp1.ui.activities.MainActivityVM
 import com.appetiser.appetiserapp1.ui.activities.TrackState
+import com.appetiser.appetiserapp1.utils.Constants
 import com.nei1even.adrcodingchallengelibrary.core.binding.EpoxyFragment
 import com.nei1even.adrcodingchallengelibrary.core.mvrx.simpleController
 import kotlinx.android.synthetic.main.toolbar_main.view.toolbar
@@ -59,7 +62,7 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
 
                 carousel {
                     id("previousVisitedCarousel")
-                    padding(Carousel.Padding.dp(0,4,0,16,1))
+                    paddingRes(R.dimen.view_pager_item_padding)
                     hasFixedSize(true)
                     previouslyVisitedTracks.map {
                         BindableTrackGridBindingModel_()
@@ -73,7 +76,6 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                                 navigateTo(R.id.action_trackListFragment_to_trackDetailFragment)
                             }
                     }.let { models(it) }
-                    numViewsToShowOnScreen(if (atLeastOneVisited) 1f else 0f)
                 }
             }
         }
@@ -82,8 +84,16 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
+        sharedPreferences?.let { sharedPref ->
+            sharedPref.edit().let { editor ->
+                findNavController().currentDestination?.id?.let { editor.putInt(Constants.LAST_NAVIGATED_PAGE, it) }
+                editor.apply()
+            }
+        }
+
         val addButton = (activity as MainActivity).binding.addButton
-        viewModel.run {
+        with(viewModel) {
             selectSubscribe(TrackState::tracks) {
                 when {
                     it.isEmpty() -> addButton.hide()
@@ -94,6 +104,11 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
 
         binding.run {
             toolbarMain.toolbar.title = "Home"
+
+            with(epoxyRecyclerView) {
+                val layoutManager = LinearLayoutManager(context)
+                setLayoutManager(layoutManager)
+            }
         }
 
     }

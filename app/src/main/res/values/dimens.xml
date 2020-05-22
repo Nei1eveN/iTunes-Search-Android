@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <bool name="is_tablet">false</bool>
+
     <dimen name="activity_horizontal_margin_default">16dp</dimen>
     <dimen name="activity_horizontal_padding_default">8dp</dimen>
 
