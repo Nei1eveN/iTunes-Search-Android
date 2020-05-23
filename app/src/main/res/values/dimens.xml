@@ -11,6 +11,8 @@
 
     <dimen name="header_text_size">20sp</dimen>
 
+    <dimen name="description_header_text_size">15sp</dimen>
+
     <dimen name="view_pager_item_padding">32dp</dimen>
 
 </resources>

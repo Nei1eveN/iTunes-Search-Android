@@ -23,7 +23,7 @@
             android:layout_margin="@dimen/activity_horizontal_margin_default" />
 
 
-        <com.appetiser.appetiserapp1.ui.views.NonSwipeableRefreshLayout
+        <com.appetiserapps.itunessearch.ui.views.NonSwipeableRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -41,7 +41,7 @@
                 tools:listitem="@layout/list_item_bindable_track_grid"
                 tools:orientation="horizontal" />
 
-        </com.appetiser.appetiserapp1.ui.views.NonSwipeableRefreshLayout>
+        </com.appetiserapps.itunessearch.ui.views.NonSwipeableRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

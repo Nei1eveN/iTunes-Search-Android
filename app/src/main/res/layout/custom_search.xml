@@ -27,6 +27,8 @@
                 android:fontFamily="@font/gotham_bold"
                 android:hint="@string/search"
                 app:boxBackgroundMode="outline"
+                app:boxStrokeColor="?attr/colorAccent"
+                app:hintTextColor="?attr/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">

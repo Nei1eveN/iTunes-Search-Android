@@ -14,7 +14,7 @@
             type="String" />
 
         <variable
-            name="trackPrice"
+            name="price"
             type="String" />
 
         <variable
@@ -38,7 +38,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:contentDescription="@null"
-            android:scaleType="centerInside"
+            android:scaleType="fitXY"
             app:imageTrackUrl="@{imageUrl}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
             style="@style/AppTheme.TrackDescription"
             android:layout_width="0dp"
             android:gravity="center"
-            android:text="@{trackPrice}"
+            android:text="@{price}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleText"
