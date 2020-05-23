@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <bool name="is_tablet">false</bool>
+
     <dimen name="activity_horizontal_margin_default">16dp</dimen>
     <dimen name="activity_horizontal_padding_default">8dp</dimen>
 
@@ -8,6 +10,8 @@
     <dimen name="track_desc_text_size">12sp</dimen>
 
     <dimen name="header_text_size">20sp</dimen>
+
+    <dimen name="description_header_text_size">15sp</dimen>
 
     <dimen name="view_pager_item_padding">32dp</dimen>
 

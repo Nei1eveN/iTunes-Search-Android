@@ -1,10 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/lightGreen</item>
-        <item name="colorPrimaryDark">@color/lightGreenPrimaryDark</item>
+        <!--<item name="colorPrimary">@color/lightGreen</item>
+        <item name="colorPrimaryDark">@color/lightGreenPrimaryDark</item>-->
         <item name="colorAccent">@color/lightGreenPrimaryDark</item>
     </style>
 
@@ -38,6 +38,19 @@
         <item name="android:padding">@dimen/activity_horizontal_margin_default</item>
     </style>
 
+    <style name="AppTheme.DescriptionHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/gotham_bold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/description_header_text_size</item>
+        <item name="android:padding">@dimen/activity_horizontal_margin_default</item>
+    </style>
+
+    <style name="AppTheme.DescriptionDetail" parent="AppTheme.TrackDescription">
+        <item name="android:padding">@dimen/activity_horizontal_margin_default</item>
+    </style>
+
     <style name="AppTheme.Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -61,7 +74,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/header_text_size</item>
-        <item name="android:textColor">@color/white</item>
+        <!--<item name="android:textColor">@color/white</item>-->
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/gotham_bold</item>
     </style>

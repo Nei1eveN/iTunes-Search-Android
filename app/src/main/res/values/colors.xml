@@ -10,4 +10,6 @@
     <color name="lightGreen">#66BB6A</color>
     <color name="lightGreenPrimaryDark">#4CAF50</color>
     <color name="dark">#EC272424</color>
+
+    <color name="dim_dark">#6F000000</color>
 </resources>

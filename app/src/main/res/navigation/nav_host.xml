@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/trackDetailFragment"
-        android:name="com.appetiser.appetiserapp1.ui.fragments.TrackDetailFragment"
+        android:name="com.appetiserapps.itunessearch.ui.fragments.TrackDetailFragment"
         android:label="fragment_track_detail"
         tools:layout="@layout/fragment_track_detail" />
     <fragment
         android:id="@+id/trackListFragment"
-        android:name="com.appetiser.appetiserapp1.ui.fragments.TrackListFragment"
+        android:name="com.appetiserapps.itunessearch.ui.fragments.TrackListFragment"
         android:label="fragment_track_list"
         tools:layout="@layout/fragment_track_list" >
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/trackSearchFragment"
-        android:name="com.appetiser.appetiserapp1.ui.fragments.TrackSearchFragment"
+        android:name="com.appetiserapps.itunessearch.ui.fragments.TrackSearchFragment"
         android:label="fragment_track_search"
         tools:layout="@layout/fragment_track_search" >
         <action

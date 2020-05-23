@@ -12,6 +12,7 @@
     <!--Kinds-->
     <string name="song">Song</string>
     <string name="feature_movie">Feature Movie</string>
+    <string name="tv_episode">TV Episodes / TV Series</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -25,7 +26,18 @@
     <string name="country">Country</string>
     <string name="country_code_hint">Country Code</string>
 
+    <!--HTML placeholder/s-->
+    <string name="html_text_placeholder_test">
+        <b>Audie Award Nominee, Best Teens Category, 2013</b>
+        <br /><br />
+        Despite the tumor-shrinking medical miracle that has bought her a few years, Hazel has never been anything but terminal, her final chapter inscribed upon diagnosis. But when a gorgeous plot twist named Augustus Waters suddenly appears at Cancer Kid Support Group, Hazel’s story is about to be completely rewritten.
+        <br /><br />
+        Insightful, bold, irreverent, and raw,
+        <i>The Fault in Our Stars</i> is award-winning-author John Green’s most ambitious and heartbreaking work yet, brilliantly exploring the funny, thrilling, and tragic business of being alive and in love.
+    </string>
+
     <string-array name="preset_country_codes">
+        <item/>
         <item>AU</item>
         <item>US</item>
     </string-array>
