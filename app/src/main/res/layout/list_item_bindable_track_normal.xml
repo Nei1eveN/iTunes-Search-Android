@@ -31,7 +31,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{onClick}">
+        android:onClick="@{onClick}"
+        android:paddingStart="@dimen/activity_horizontal_margin_default"
+        android:paddingEnd="@dimen/activity_horizontal_margin_default">
 
         <ImageView
             android:id="@+id/trackImage"
@@ -48,9 +50,6 @@
             android:id="@+id/titleText"
             style="@style/AppTheme.TrackTitle"
             android:layout_width="0dp"
-            android:autoSizeTextType="uniform"
-            android:paddingStart="@dimen/activity_horizontal_padding_default"
-            android:paddingEnd="@dimen/activity_horizontal_padding_default"
             android:text="@{trackTitle}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/trackImage"
@@ -61,7 +60,6 @@
             android:id="@+id/trackPrice"
             style="@style/AppTheme.TrackDescription"
             android:layout_width="0dp"
-            android:autoSizeTextType="uniform"
             android:text="@{price}"
             app:layout_constraintEnd_toEndOf="@+id/titleText"
             app:layout_constraintStart_toStartOf="@+id/titleText"
@@ -71,7 +69,6 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/AppTheme.TrackDescription"
             android:layout_width="0dp"
-            android:autoSizeTextType="uniform"
             android:text="@{trackGenre}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/titleText"

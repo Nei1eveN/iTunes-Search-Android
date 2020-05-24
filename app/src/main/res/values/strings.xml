@@ -14,6 +14,15 @@
     <string name="feature_movie">Feature Movie</string>
     <string name="tv_episode">TV Episodes / TV Series</string>
 
+    <!--Label-->
+    <string name="genre">Genre</string>
+    <string name="author">Author</string>
+    <string name="directed_by">Directed by</string>
+    <string name="from">From</string>
+    <string name="price">Price</string>
+    <string name="copyright">Copyright</string>
+    <string name="collection">Collection</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="track_details">Track Details</string>

@@ -49,6 +49,7 @@
 
     <style name="AppTheme.DescriptionDetail" parent="AppTheme.TrackDescription">
         <item name="android:padding">@dimen/activity_horizontal_margin_default</item>
+        <item name="android:textSize">@dimen/description_detail_text_size</item>
     </style>
 
     <style name="AppTheme.Button">

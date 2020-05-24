@@ -62,5 +62,9 @@ dependencies {
     def glideVersion = "4.11.0"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
+    // Coding Challenge Library (self-made library)
     implementation 'com.github.Nei1eveN:ADR-Coding-Challenge:1.0.0'
+
+    // Google ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.4'
 }

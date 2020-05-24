@@ -19,8 +19,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         binding.run {
             navigationController.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
-                    R.id.trackListFragment -> addButton.show()
-                    else -> addButton.hide()
+                    R.id.trackDetailFragment, R.id.trackSearchFragment -> addButton.hide()
                 }
             }
 

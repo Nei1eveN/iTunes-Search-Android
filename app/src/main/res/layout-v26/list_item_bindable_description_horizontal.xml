@@ -6,18 +6,12 @@
     <data>
 
         <variable
-            name="showHeader"
-            type="Boolean" />
-
-        <variable
             name="headerText"
             type="String" />
 
         <variable
             name="detailsText"
-            type="android.text.Spanned" />
-
-        <import type="android.view.View" />
+            type="String" />
 
     </data>
 
@@ -29,27 +23,25 @@
             android:id="@+id/descriptionHeader"
             style="@style/AppTheme.DescriptionHeader"
             android:layout_width="0dp"
+            android:padding="@dimen/activity_horizontal_margin_default"
             android:text="@{headerText}"
-            android:visibility="@{showHeader ? View.VISIBLE : View.GONE}"
-            android:paddingStart="@{showHeader ? @dimen/activity_horizontal_margin_default : @dimen/zero_dp}"
-            android:paddingEnd="@{showHeader ? @dimen/activity_horizontal_margin_default : @dimen/zero_dp}"
-            android:paddingTop="@{showHeader ? @dimen/activity_horizontal_margin_default : @dimen/zero_dp}"
-            android:paddingBottom="@{showHeader ? @dimen/zero_dp : @dimen/activity_horizontal_margin_default}"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/descriptionDetail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/audiobook"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/descriptionDetail"
             style="@style/AppTheme.DescriptionDetail"
             android:layout_width="0dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="end|center_vertical"
             android:text="@{detailsText}"
-            android:visibility="@{!detailsText.toString().empty ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionHeader"
-            tools:text="@string/html_text_placeholder_test" />
+            app:layout_constraintTop_toTopOf="@+id/descriptionHeader"
+            tools:text="@string/tv_episode" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

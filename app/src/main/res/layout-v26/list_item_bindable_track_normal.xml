@@ -31,7 +31,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{onClick}">
+        android:onClick="@{onClick}"
+        android:paddingStart="@dimen/activity_horizontal_margin_default"
+        android:paddingEnd="@dimen/activity_horizontal_margin_default" >
 
         <ImageView
             android:id="@+id/trackImage"
@@ -49,8 +51,6 @@
             style="@style/AppTheme.TrackTitle"
             android:layout_width="0dp"
             android:autoSizeTextType="uniform"
-            android:paddingStart="@dimen/activity_horizontal_padding_default"
-            android:paddingEnd="@dimen/activity_horizontal_padding_default"
             android:text="@{trackTitle}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/trackImage"

@@ -73,7 +73,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                 if (moreThanThree) {
                     carousel {
                         id("audioBooksCarousel")
-                        paddingRes(R.dimen.view_pager_item_padding)
+                        paddingRes(R.dimen.activity_horizontal_margin_default)
                         hasFixedSize(true)
                         audioBooks.map {
                             BindableTrackGridBindingModel_()
@@ -127,7 +127,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                     if (moreThanThree) {
                         carousel {
                             id("featureMovieCarousel")
-                            paddingRes(R.dimen.view_pager_item_padding)
+                            paddingRes(R.dimen.activity_horizontal_margin_default)
                             featureMovie.map {
                                 BindableTrackGridBindingModel_()
                                     .id(it.trackId)
@@ -177,7 +177,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                     if (moreThanThree) {
                         carousel {
                             id("songCarousel")
-                            paddingRes(R.dimen.view_pager_item_padding)
+                            paddingRes(R.dimen.activity_horizontal_margin_default)
                             song.map {
                                 BindableTrackGridBindingModel_()
                                     .id(it.trackId)
@@ -227,7 +227,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                     if (moreThanThree) {
                         carousel {
                             id("tvEpisodeCarousel")
-                            paddingRes(R.dimen.view_pager_item_padding)
+                            paddingRes(R.dimen.activity_horizontal_margin_default)
                             hasFixedSize(true)
                             tvEpisode.map {
                                 BindableTrackGridBindingModel_()
