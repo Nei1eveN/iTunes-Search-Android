@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="showHeader"
+            type="Boolean" />
+
+        <variable
+            name="headerText"
+            type="String" />
+
+        <variable
+            name="detailsText"
+            type="android.text.Spanned" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/descriptionHeader"
+            style="@style/AppTheme.DescriptionHeader"
+            android:layout_width="0dp"
+            android:text="@{headerText}"
+            android:visibility="@{showHeader ? View.VISIBLE : View.GONE}"
+            android:paddingStart="@{showHeader ? @dimen/activity_horizontal_margin_default : @dimen/zero_dp}"
+            android:paddingEnd="@{showHeader ? @dimen/activity_horizontal_margin_default : @dimen/zero_dp}"
+            android:paddingTop="@{showHeader ? @dimen/activity_horizontal_margin_default : @dimen/zero_dp}"
+            android:paddingBottom="@{showHeader ? @dimen/zero_dp : @dimen/activity_horizontal_margin_default}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/audiobook"
+            tools:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/AppTheme.DescriptionDetail"
+            android:layout_width="0dp"
+            android:text="@{detailsText}"
+            android:visibility="@{!detailsText.toString().empty ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionHeader"
+            tools:text="@string/html_text_placeholder_test" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

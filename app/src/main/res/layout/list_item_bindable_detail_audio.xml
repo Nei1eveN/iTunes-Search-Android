@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        
+        <variable
+            name="previewUrl"
+            type="String" />
+
+        <variable
+            name="player"
+            type="com.google.android.exoplayer2.ExoPlayer" />
+        
+    </data>
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        previewUrl="@{previewUrl}"
+        exoPlayer="@{player}"
+        app:show_timeout="0"
+        app:hide_on_touch="false"/>
+
+</layout>
