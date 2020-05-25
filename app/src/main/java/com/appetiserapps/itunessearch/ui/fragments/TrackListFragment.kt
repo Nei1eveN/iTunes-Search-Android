@@ -8,13 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyRecyclerView
-import com.airbnb.epoxy.carousel
 import com.airbnb.mvrx.activityViewModel
-import com.appetiserapps.itunessearch.BindableTrackGridBindingModel_
 import com.appetiserapps.itunessearch.R
 import com.appetiserapps.itunessearch.bindableEmptyScreen
 import com.appetiserapps.itunessearch.bindableHeaderViewMore
+import com.appetiserapps.itunessearch.bindableTrackNormal
+import com.appetiserapps.itunessearch.data.model.Track
 import com.appetiserapps.itunessearch.databinding.FragmentTrackListBinding
+import com.appetiserapps.itunessearch.extensions.toDateFormat
 import com.appetiserapps.itunessearch.ui.activities.MainActivity
 import com.appetiserapps.itunessearch.ui.activities.MainActivityVM
 import com.appetiserapps.itunessearch.ui.activities.TrackState
@@ -22,6 +23,7 @@ import com.appetiserapps.itunessearch.utils.Constants
 import com.nei1even.adrcodingchallengelibrary.core.binding.EpoxyFragment
 import com.nei1even.adrcodingchallengelibrary.core.mvrx.simpleController
 import kotlinx.android.synthetic.main.toolbar_main.view.toolbar
+import java.util.Date
 
 /**
  * A simple [Fragment] subclass.
@@ -47,9 +49,9 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                 }
             }
         } else {
-            val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited }
+            val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited && it.date.toDateFormat() == Date().toDateFormat() }
             val atLeastOneVisited = previouslyVisitedTracks.isNotEmpty()
-            val moreThanThree = previouslyVisitedTracks.size > 3
+            val moreThanThree = previouslyVisitedTracks.size >= 3
             if (atLeastOneVisited) {
                 bindableHeaderViewMore {
                     id("previouslyVisited")
@@ -60,22 +62,45 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                     }
                 }
 
-                carousel {
-                    id("previousVisitedCarousel")
-                    paddingRes(R.dimen.view_pager_item_padding)
-                    hasFixedSize(true)
-                    previouslyVisitedTracks.map {
-                        BindableTrackGridBindingModel_()
-                            .id(it.trackId)
-                            .imageUrl(it.artworkUrl100)
-                            .trackTitle(it.trackName)
-                            .price(it.trackPrice.toString())
-                            .trackGenre(it.primaryGenreName)
-                            .onClick { _ ->
-                                viewModel.viewDetails(it)
-                                navigateTo(R.id.action_trackListFragment_to_trackDetailFragment)
+                bindableHeaderViewMore {
+                    id("visitedToday")
+                    headerText(getString(R.string.visited_today))
+                    showViewMore(false)
+                    onClick { view ->
+                        Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                previouslyVisitedTracks.forEach {
+                    val title = when (it.wrapperType) {
+                        Track.WrapperType.AUDIOBOOK.value -> {
+                            when {
+                                it.collectionName.isNotEmpty() -> it.collectionName
+                                else -> it.collectionCensoredName
                             }
-                    }.let { models(it) }
+                        }
+                        else -> {
+                            when {
+                                it.trackName.isNotEmpty() -> it.trackName
+                                else -> it.trackCensoredName
+                            }
+                        }
+                    }
+                    val price = when (it.wrapperType) {
+                        Track.WrapperType.AUDIOBOOK.value -> "${it.collectionPrice} ${it.currency}"
+                        else -> "${it.trackPrice} ${it.currency}"
+                    }
+                    bindableTrackNormal {
+                        id("today${it.trackId}")
+                        imageUrl(it.artworkUrl100)
+                        trackTitle(title)
+                        price(price)
+                        trackGenre(it.primaryGenreName)
+                        onClick { _ ->
+                            viewModel.viewDetails(it)
+                            navigateTo(R.id.action_trackListFragment_to_trackDetailFragment)
+                        }
+                    }
                 }
             }
         }
@@ -93,13 +118,8 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
         }
 
         val addButton = (activity as MainActivity).binding.addButton
-        with(viewModel) {
-            selectSubscribe(TrackState::tracks) {
-                when {
-                    it.isEmpty() -> addButton.hide()
-                    else -> addButton.show()
-                }
-            }
+        viewModel.selectSubscribe(TrackState::tracks) {
+            if (it.isNotEmpty()) addButton.show()
         }
 
         binding.run {

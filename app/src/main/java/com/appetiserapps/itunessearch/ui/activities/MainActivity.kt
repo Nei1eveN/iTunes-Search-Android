@@ -17,13 +17,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         bind(R.layout.activity_main)
 
         binding.run {
-            navigationController.addOnDestinationChangedListener { _, destination, _ ->
-                when (destination.id) {
-                    R.id.trackListFragment -> addButton.show()
-                    else -> addButton.hide()
-                }
-            }
-
             setFabOnClick {
                 navigationController.navigate(R.id.trackSearchFragment)
             }

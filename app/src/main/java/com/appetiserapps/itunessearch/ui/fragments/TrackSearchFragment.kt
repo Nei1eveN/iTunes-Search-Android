@@ -20,6 +20,7 @@ import com.appetiserapps.itunessearch.bindableHeaderViewMore
 import com.appetiserapps.itunessearch.bindableTrackNormal
 import com.appetiserapps.itunessearch.data.model.Track
 import com.appetiserapps.itunessearch.databinding.FragmentTrackSearchBinding
+import com.appetiserapps.itunessearch.ui.activities.MainActivity
 import com.appetiserapps.itunessearch.ui.activities.MainActivityVM
 import com.appetiserapps.itunessearch.ui.activities.TrackState
 import com.appetiserapps.itunessearch.utils.Constants
@@ -73,7 +74,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                 if (moreThanThree) {
                     carousel {
                         id("audioBooksCarousel")
-                        paddingRes(R.dimen.view_pager_item_padding)
+                        paddingRes(R.dimen.activity_horizontal_margin_default)
                         hasFixedSize(true)
                         audioBooks.map {
                             BindableTrackGridBindingModel_()
@@ -127,13 +128,21 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                     if (moreThanThree) {
                         carousel {
                             id("featureMovieCarousel")
-                            paddingRes(R.dimen.view_pager_item_padding)
+                            paddingRes(R.dimen.activity_horizontal_margin_default)
                             featureMovie.map {
+                                val title = when {
+                                    it.trackName.isNotEmpty() -> it.trackName
+                                    else -> it.trackCensoredName
+                                }
+                                val price = when {
+                                    it.trackPrice > 0.0 -> "${it.trackPrice} ${it.currency}"
+                                    else -> "${it.collectionPrice} ${it.currency}"
+                                }
                                 BindableTrackGridBindingModel_()
                                     .id(it.trackId)
                                     .imageUrl(it.artworkUrl100)
-                                    .trackTitle(it.collectionName)
-                                    .price("Collection Price: ${it.collectionPrice}")
+                                    .trackTitle(title)
+                                    .price(price)
                                     .trackGenre(it.primaryGenreName)
                                     .onClick { _ ->
                                         viewModel.viewDetails(it)
@@ -143,14 +152,20 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                         }
                     } else {
                         featureMovie.forEach {
-                            val title = if(it.trackName.isNotEmpty()) it.trackName else it.collectionName
-                            val price = if(it.trackPrice > 0.0) it.trackPrice else it.collectionPrice
+                            val title = when {
+                                it.trackName.isNotEmpty() -> it.trackName
+                                else -> it.trackCensoredName
+                            }
+                            val price = when {
+                                it.trackPrice > 0.0 -> "${it.trackPrice} ${it.currency}"
+                                else -> "${it.collectionPrice} ${it.currency}"
+                            }
 
                             bindableTrackNormal {
                                 id(it.trackId)
                                 imageUrl(it.artworkUrl100)
                                 trackTitle(title)
-                                price(price.toString())
+                                price(price)
                                 trackGenre(it.primaryGenreName)
                                 onClick { _ ->
                                     viewModel.viewDetails(it)
@@ -177,13 +192,21 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                     if (moreThanThree) {
                         carousel {
                             id("songCarousel")
-                            paddingRes(R.dimen.view_pager_item_padding)
+                            paddingRes(R.dimen.activity_horizontal_margin_default)
                             song.map {
+                                val title = when {
+                                    it.trackName.isNotEmpty() -> it.trackName
+                                    else -> it.trackCensoredName
+                                }
+                                val price = when {
+                                    it.trackPrice > 0.0 -> "${it.trackPrice} ${it.currency}"
+                                    else -> "${it.collectionPrice} ${it.currency}"
+                                }
                                 BindableTrackGridBindingModel_()
                                     .id(it.trackId)
                                     .imageUrl(it.artworkUrl100)
-                                    .trackTitle(it.collectionName)
-                                    .price("Collection Price: ${it.collectionPrice}")
+                                    .trackTitle(title)
+                                    .price(price)
                                     .trackGenre(it.primaryGenreName)
                                     .onClick { _ ->
                                         viewModel.viewDetails(it)
@@ -193,14 +216,19 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                         }
                     } else {
                         song.forEach {
-                            val title = if(it.trackName.isNotEmpty()) it.trackName else it.collectionName
-                            val price = if(it.trackPrice > 0.0) it.trackPrice else it.collectionPrice
-
+                            val title = when {
+                                it.trackName.isNotEmpty() -> it.trackName
+                                else -> it.trackCensoredName
+                            }
+                            val price = when {
+                                it.trackPrice > 0.0 -> "${it.trackPrice} ${it.currency}"
+                                else -> "${it.collectionPrice} ${it.currency}"
+                            }
                             bindableTrackNormal {
                                 id(it.trackId)
                                 imageUrl(it.artworkUrl100)
                                 trackTitle(title)
-                                price(price.toString())
+                                price(price)
                                 trackGenre(it.primaryGenreName)
                                 onClick { _ ->
                                     viewModel.viewDetails(it)
@@ -227,14 +255,22 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                     if (moreThanThree) {
                         carousel {
                             id("tvEpisodeCarousel")
-                            paddingRes(R.dimen.view_pager_item_padding)
+                            paddingRes(R.dimen.activity_horizontal_margin_default)
                             hasFixedSize(true)
                             tvEpisode.map {
+                                val title = when {
+                                    it.trackName.isNotEmpty() -> it.trackName
+                                    else -> it.trackCensoredName
+                                }
+                                val price = when {
+                                    it.trackPrice > 0.0 -> "${it.trackPrice} ${it.currency}"
+                                    else -> "${it.collectionPrice} ${it.currency}"
+                                }
                                 BindableTrackGridBindingModel_()
                                     .id(it.trackId)
                                     .imageUrl(it.artworkUrl100)
-                                    .trackTitle(it.collectionName)
-                                    .price("Collection Price: ${it.collectionPrice}")
+                                    .trackTitle(title)
+                                    .price(price)
                                     .trackGenre(it.primaryGenreName)
                                     .onClick { _ ->
                                         viewModel.viewDetails(it)
@@ -244,14 +280,20 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                         }
                     } else {
                         tvEpisode.forEach {
-                            val title = if(it.trackName.isNotEmpty()) it.trackName else it.collectionName
-                            val price = if(it.trackPrice > 0.0) it.trackPrice else it.collectionPrice
+                            val title = when {
+                                it.trackName.isNotEmpty() -> it.trackName
+                                else -> it.trackCensoredName
+                            }
+                            val price = when {
+                                it.trackPrice > 0.0 -> "${it.trackPrice} ${it.currency}"
+                                else -> "${it.collectionPrice} ${it.currency}"
+                            }
 
                             bindableTrackNormal {
                                 id(it.trackId)
                                 imageUrl(it.artworkUrl100)
                                 trackTitle(title)
-                                price(price.toString())
+                                price(price)
                                 trackGenre(it.primaryGenreName)
                                 onClick { _ ->
                                     viewModel.viewDetails(it)
@@ -267,6 +309,9 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val addButton = (activity as MainActivity).binding.addButton
+        addButton.hide()
 
         val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
         sharedPreferences?.let { sharedPref ->

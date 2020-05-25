@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/black</item>
         <!--<item name="colorPrimary">@color/lightGreen</item>
         <item name="colorPrimaryDark">@color/lightGreenPrimaryDark</item>-->
         <item name="colorAccent">@color/lightGreenPrimaryDark</item>
@@ -49,6 +50,7 @@
 
     <style name="AppTheme.DescriptionDetail" parent="AppTheme.TrackDescription">
         <item name="android:padding">@dimen/activity_horizontal_margin_default</item>
+        <item name="android:textSize">@dimen/description_detail_text_size</item>
     </style>
 
     <style name="AppTheme.Button">

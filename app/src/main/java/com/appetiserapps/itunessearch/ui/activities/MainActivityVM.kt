@@ -61,17 +61,17 @@ class MainActivityVM(
 
     init {
         viewModelScope.launch {
-            repository.getTracks().collect {
-                setTracks(it)
+            repository.getTracks().collect { list ->
+                setTracks(list.sortedByDescending { it.date })
             }
         }
 
         with(mainActivityArgs) {
             when {
-                trackId > 0 && lastPageId == R.id.trackDetailFragment -> {
+                trackId != 0 && lastPageId == R.id.trackDetailFragment -> {
                     navigationController.navigateTo(lastPageId, TrackDetailArgs(trackId = trackId))
                 }
-                lastPageId > 0 && lastPageId == R.id.trackSearchFragment -> {
+                lastPageId != 0 && lastPageId == R.id.trackSearchFragment -> {
                     navigationController.navigate(lastPageId)
                 }
             }
@@ -166,8 +166,9 @@ class MainActivityVM(
                         previouslyVisited = true
                         date = Date()
                     }
+                    val updatedBook = repository.addItem(audioBook)?.toUnmanaged()
                     setState {
-                        copy(item = audioBook)
+                        copy(item = updatedBook)
                     }
                 }
             } else {
@@ -190,8 +191,9 @@ class MainActivityVM(
                         previouslyVisited = true
                         date = Date()
                     }
+                    val updatedTrack = repository.addItem(otherTrack)?.toUnmanaged()
                     setState {
-                        copy(item = otherTrack)
+                        copy(item = updatedTrack)
                     }
                 }
             }
