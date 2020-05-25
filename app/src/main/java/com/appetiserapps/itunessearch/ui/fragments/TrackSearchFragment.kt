@@ -1,6 +1,5 @@
 package com.appetiserapps.itunessearch.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -19,12 +18,14 @@ import com.appetiserapps.itunessearch.bindableHeaderViewMore
 import com.appetiserapps.itunessearch.bindableTrackNormal
 import com.appetiserapps.itunessearch.data.model.Track
 import com.appetiserapps.itunessearch.databinding.FragmentTrackSearchBinding
+import com.appetiserapps.itunessearch.extensions.getLastPageSharedPreferences
+import com.appetiserapps.itunessearch.extensions.saveLastPageId
+import com.appetiserapps.itunessearch.extensions.saveLastSearchKeyword
+import com.appetiserapps.itunessearch.extensions.saveSearchResultTracks
 import com.appetiserapps.itunessearch.ui.activities.MainActivity
 import com.appetiserapps.itunessearch.ui.activities.MainActivityVM
 import com.appetiserapps.itunessearch.ui.activities.TrackState
-import com.appetiserapps.itunessearch.utils.Constants
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 import com.nei1even.adrcodingchallengelibrary.core.binding.EpoxyFragment
 import com.nei1even.adrcodingchallengelibrary.core.extensions.hideKeyboard
 import com.nei1even.adrcodingchallengelibrary.core.extensions.makeSafeSnackbar
@@ -389,13 +390,8 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
         val addButton = (activity as MainActivity).binding.addButton
         addButton.hide()
 
-        val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
-        sharedPreferences?.let { sharedPref ->
-            sharedPref.edit().let { editor ->
-                findNavController().currentDestination?.id?.let { editor.putInt(Constants.LAST_NAVIGATED_PAGE, it) }
-                editor.apply()
-            }
-        }
+        val sharedPreferences = activity?.getLastPageSharedPreferences()
+        findNavController().currentDestination?.id?.let { sharedPreferences.saveLastPageId(it) }
 
         binding.run {
             with(epoxyRecyclerView) {
@@ -415,11 +411,11 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                 when {
                                     this.text.toString().isEmpty() -> {
                                         makeSafeSnackbar("Please enter a text", Snackbar.LENGTH_LONG)?.show()
-                                        viewModel.setSearchTerm("")
+                                        viewModel.searchFor("")
                                     }
                                     else -> {
                                         activity?.hideKeyboard()
-                                        viewModel.setSearchTerm(text.toString())
+                                        viewModel.searchFor(text.toString())
                                     }
                                 }
                                 true
@@ -437,26 +433,13 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
 
                 selectSubscribe(TrackState::searchText) {
                     it.takeIf { it.isNotEmpty() }?.let {
-                        sharedPreferences?.let { sharedPref ->
-                            sharedPref.edit().let { editor ->
-                                editor.putString(Constants.LAST_SEARCH_KEYWORD, it)
-                                editor.apply()
-                            }
-                        }
+                        sharedPreferences.saveLastSearchKeyword(it)
                     }
                 }
 
                 selectSubscribe(TrackState::searchResult) {
                     it.tracks.takeIf { it.isNotEmpty() }?.let { searchedTracks ->
-                        val gson = Gson()
-                        val json = gson.toJson(searchedTracks)
-
-                        sharedPreferences?.let { sharedPref ->
-                            sharedPref.edit().let { editor ->
-                                editor.putString(Constants.LAST_RESULT_FROM_SEARCH, json)
-                                editor.apply()
-                            }
-                        }
+                        sharedPreferences.saveSearchResultTracks(searchedTracks)
                     }
                 }
             }

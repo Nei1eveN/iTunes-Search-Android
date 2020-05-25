@@ -7,8 +7,8 @@
     <string name="show_more">More</string>
 
     <!--WrapperTypes-->
-    <string name="audiobook">Audiobook</string>
-    <string name="track">Track</string>
+    <string name="audiobook">Audiobooks</string>
+    <string name="track">Tracks</string>
 
     <!--Kinds-->
     <string name="song">Song</string>
@@ -38,6 +38,7 @@
     <string name="empty_search_term">Please enter a text</string>
 
     <string name="tracks_not_found">Tracks Not Found.</string>
+    <string name="no_tracks_today">It looks like you have not visited any tracks for this day.\nClick the add button to find some tracks</string>
     <string name="country">Country</string>
     <string name="country_code_hint">Country Code</string>
 

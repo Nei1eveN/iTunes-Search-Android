@@ -30,7 +30,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     override fun onBackPressed() {
         when(navigationController.currentDestination?.id) {
             R.id.trackListFragment -> finish()
-            R.id.trackDetailFragment, R.id.trackSearchFragment -> navigationController.popBackStack()
+            R.id.trackDetailFragment, R.id.trackSearchFragment, R.id.showMoreTrackFragment -> navigationController.popBackStack()
             else -> super.onBackPressed()
         }
     }

@@ -1,6 +1,5 @@
 package com.appetiserapps.itunessearch.ui.activities
 
-import android.content.Context
 import android.os.Parcelable
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -14,8 +13,16 @@ import com.appetiserapps.itunessearch.R
 import com.appetiserapps.itunessearch.data.model.SearchResult
 import com.appetiserapps.itunessearch.data.model.Track
 import com.appetiserapps.itunessearch.data.repository.TrackRepository
+import com.appetiserapps.itunessearch.extensions.getLastPageId
+import com.appetiserapps.itunessearch.extensions.getLastPageSharedPreferences
+import com.appetiserapps.itunessearch.extensions.getLastSearchKeyword
+import com.appetiserapps.itunessearch.extensions.getLastTrackId
+import com.appetiserapps.itunessearch.extensions.getNavigateFromHome
+import com.appetiserapps.itunessearch.extensions.getSearchResultJSONString
+import com.appetiserapps.itunessearch.extensions.getSearchResultList
+import com.appetiserapps.itunessearch.extensions.getViewMoreList
+import com.appetiserapps.itunessearch.extensions.getViewMoreTracks
 import com.appetiserapps.itunessearch.extensions.navigateTo
-import com.appetiserapps.itunessearch.utils.Constants
 import com.nei1even.adrcodingchallengelibrary.core.extensions.toUnmanaged
 import com.nei1even.adrcodingchallengelibrary.core.mvrx.MvRxViewModel
 import com.nei1even.adrcodingchallengelibrary.core.network.awaitAsync
@@ -28,16 +35,34 @@ import kotlinx.coroutines.withContext
 import java.util.Date
 import java.util.UUID
 
+/**
+ * args for querying the [Track] object from the repository
+ * @param trackId id required for querying the object
+ * */
 @Parcelize
 data class TrackDetailArgs(val trackId: Int? = null) : Parcelable
 
+/**
+ * args for initializing the values to state to avoid changes when device gets rotated
+ * @param trackId last record navigated
+ * @param lastPageId last page navigated
+ * @param lastSearchKey last word user searched
+ * @param lastSearchedList last result of the list from the API upon search
+ * */
 @Parcelize
-data class MainActivityArgs(val trackId: Int? = null, val lastPageId: Int? = null) : Parcelable
+data class MainActivityArgs(
+    val trackId: Int? = null,
+    val lastPageId: Int? = null,
+    val lastSearchKey: String? = null,
+    val lastSearchedList: String? = null,
+    val lastViewMoreTracks: String? = null,
+    val navigatedFromHome: Boolean? = null
+) : Parcelable
 
 /**
  * State for the activity which can be accessed by fragments
  * @param tracks list of tracks visited by the user
- * @param searchedTracks
+ * @param searchedTracks list for searched tracks from [searchResult]
  * @param searchText user-input characters
  * @param searchResult response received from the API
  * @param isLoading loading value for showing refresh indicators
@@ -70,7 +95,27 @@ class MainActivityVM(
         with(mainActivityArgs) {
             when {
                 (trackId != null) && lastPageId == R.id.trackDetailFragment -> navigationController.navigateTo(lastPageId, TrackDetailArgs(trackId = trackId))
-                lastPageId != null && lastPageId == R.id.trackSearchFragment -> navigationController.navigate(lastPageId)
+                (lastSearchKey != null && lastSearchKey.isNotEmpty()) && (lastSearchedList != null && lastSearchedList.isNotEmpty()) && lastPageId != null && lastPageId == R.id.trackSearchFragment -> {
+                    viewModelScope.launch {
+                        setState {
+                            copy(searchResult = SearchResult(lastSearchedList.getSearchResultList().size, lastSearchedList.getSearchResultList()))
+                        }
+                        setSearchTerm(lastSearchKey)
+                    }
+                    navigationController.navigate(lastPageId)
+                }
+                (lastViewMoreTracks != null && lastViewMoreTracks.isNotEmpty()) &&
+                    lastPageId != null && lastPageId == R.id.showMoreTrackFragment -> {
+                    viewModelScope.launch {
+                        setSearchedTracks(lastViewMoreTracks.getViewMoreList())
+                    }
+                    navigatedFromHome?.let { setNavigateFromHome(it) }
+                    navigationController.navigate(lastPageId)
+                }
+                navigatedFromHome == true && lastPageId == R.id.showMoreTrackFragment -> {
+                    setNavigateFromHome(navigatedFromHome)
+                    navigationController.navigate(lastPageId)
+                }
             }
         }
     }
@@ -86,13 +131,10 @@ class MainActivityVM(
     }
 
     /**
-     * set searched text to state
-     * @param term user-input characters
+     * search for the term the user inputs
      * */
-    fun setSearchTerm(term: String) {
-        setState {
-            copy(searchText = term)
-        }
+    fun searchFor(term: String) {
+        setSearchTerm(term)
         setRefreshing(true)
         viewModelScope.launch {
             when (val result = repository.searchTerm(term).awaitAsync()) {
@@ -115,6 +157,16 @@ class MainActivityVM(
                     setRefreshing(false)
                 }
             }
+        }
+    }
+
+    /**
+     * set searched text to state
+     * @param term user-input characters
+     * */
+    private fun setSearchTerm(term: String) {
+        setState {
+            copy(searchText = term)
         }
     }
 
@@ -237,10 +289,14 @@ class MainActivityVM(
             state: TrackState
         ): MainActivityVM? {
             val navController = viewModelContext.activity.findNavController(R.id.nav_host_fragment)
-            val sharedPref = viewModelContext.activity.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
-            val trackId = sharedPref.getInt(Constants.TRACK_ID, 0)
-            val lastNavigatedPageId = sharedPref.getInt(Constants.LAST_NAVIGATED_PAGE, 0)
-            val mainActivityArgs = viewModelContext.args as? MainActivityArgs ?: MainActivityArgs(trackId, lastNavigatedPageId)
+            val sharedPref = viewModelContext.activity.getLastPageSharedPreferences()
+            val trackId = sharedPref.getLastTrackId()
+            val lastNavigatedPageId = sharedPref.getLastPageId()
+            val lastSearchKey = sharedPref.getLastSearchKeyword()
+            val lastSearchedTrackString = sharedPref.getSearchResultJSONString()
+            val lastViewMoreTracks = sharedPref.getViewMoreTracks()
+            val navigatedFromHome = sharedPref.getNavigateFromHome()
+            val mainActivityArgs = viewModelContext.args as? MainActivityArgs ?: MainActivityArgs(trackId, lastNavigatedPageId, lastSearchKey, lastSearchedTrackString, lastViewMoreTracks, navigatedFromHome)
             val realm = Realm.getDefaultInstance()
 
             return MainActivityVM(
