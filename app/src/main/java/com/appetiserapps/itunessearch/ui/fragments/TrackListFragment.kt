@@ -3,7 +3,6 @@ package com.appetiserapps.itunessearch.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,7 +48,8 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                 }
             }
         } else {
-            val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited && it.date.toDateFormat() == Date().toDateFormat() }
+            val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited }
+            val visitedTracksToday = previouslyVisitedTracks.filter { it.date.toDateFormat() == Date().toDateFormat() }
             val atLeastOneVisited = previouslyVisitedTracks.isNotEmpty()
             val moreThanThree = previouslyVisitedTracks.size >= 3
             if (atLeastOneVisited) {
@@ -57,8 +57,9 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                     id("previouslyVisited")
                     headerText(getString(R.string.previously_visited))
                     showViewMore(moreThanThree)
-                    onClick { view ->
-                        Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
+                    onClick { _ ->
+                        viewModel.setNavigateFromHome(true)
+                        navigateTo(R.id.action_trackListFragment_to_showMoreTrackFragment)
                     }
                 }
 
@@ -66,12 +67,10 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                     id("visitedToday")
                     headerText(getString(R.string.visited_today))
                     showViewMore(false)
-                    onClick { view ->
-                        Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
-                    }
+                    onClick { _ -> }
                 }
 
-                previouslyVisitedTracks.forEach {
+                visitedTracksToday.forEach {
                     val title = when (it.wrapperType) {
                         Track.WrapperType.AUDIOBOOK.value -> {
                             when {

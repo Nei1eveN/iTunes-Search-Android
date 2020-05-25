@@ -9,11 +9,12 @@
     <!--WrapperTypes-->
     <string name="audiobook">Audiobook</string>
     <string name="track">Track</string>
-    
+
     <!--Kinds-->
     <string name="song">Song</string>
     <string name="feature_movie">Feature Movie</string>
     <string name="tv_episode">TV Episodes / TV Series</string>
+    <string name="podcast">Podcast</string>
 
     <!--Label-->
     <string name="genre">Genre</string>
@@ -51,13 +52,13 @@
     </string>
 
     <string-array name="preset_country_codes">
-        <item/>
+        <item />
         <item>AU</item>
         <item>US</item>
     </string-array>
 
     <string-array name="preset_country_names">
-        <item/>
+        <item />
         <item>Australia</item>
         <item>United States</item>
     </string-array>

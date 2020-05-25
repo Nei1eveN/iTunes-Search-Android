@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +24,7 @@ import com.appetiserapps.itunessearch.ui.activities.MainActivityVM
 import com.appetiserapps.itunessearch.ui.activities.TrackState
 import com.appetiserapps.itunessearch.utils.Constants
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.nei1even.adrcodingchallengelibrary.core.binding.EpoxyFragment
 import com.nei1even.adrcodingchallengelibrary.core.extensions.hideKeyboard
 import com.nei1even.adrcodingchallengelibrary.core.extensions.makeSafeSnackbar
@@ -66,8 +66,10 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                     id("audioBookHeader")
                     headerText(getString(R.string.audiobook))
                     showViewMore(moreThanThree)
-                    onClick { view ->
-                        Toast.makeText(view.context, getString(R.string.audiobook), Toast.LENGTH_SHORT).show()
+                    onClick { _ ->
+                        viewModel.setSearchedTracks(audioBooks)
+                        viewModel.setNavigateFromHome(false)
+                        navigateTo(R.id.action_trackSearchFragment_to_showMoreTrackFragment)
                     }
                 }
 
@@ -111,6 +113,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                 val featureMovie = tracks.filter { it.kind == Track.TrackKind.FEATURE_MOVIE.value }
                 val song = tracks.filter { it.kind == Track.TrackKind.SONG.value }
                 val tvEpisode = tracks.filter { it.kind == Track.TrackKind.TV_EPISODE.value }
+                val podcasts = tracks.filter { it.kind == Track.TrackKind.PODCAST.value }
 
                 // kind: feature-movie
                 if (featureMovie.isNotEmpty()) {
@@ -120,8 +123,10 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                         id("featureMovieHeader")
                         headerText(getString(R.string.feature_movie))
                         showViewMore(moreThanThree)
-                        onClick { view ->
-                            Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
+                        onClick { _ ->
+                            viewModel.setSearchedTracks(featureMovie)
+                            viewModel.setNavigateFromHome(false)
+                            navigateTo(R.id.action_trackSearchFragment_to_showMoreTrackFragment)
                         }
                     }
 
@@ -185,7 +190,9 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                         headerText(getString(R.string.song))
                         showViewMore(moreThanThree)
                         onClick { view ->
-                            Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
+                            viewModel.setSearchedTracks(song)
+                            viewModel.setNavigateFromHome(false)
+                            navigateTo(R.id.action_trackSearchFragment_to_showMoreTrackFragment)
                         }
                     }
 
@@ -247,8 +254,10 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                         id("tvEpisodeHeader")
                         headerText(getString(R.string.tv_episode))
                         showViewMore(moreThanThree)
-                        onClick { view ->
-                            Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
+                        onClick { _ ->
+                            viewModel.setSearchedTracks(tvEpisode)
+                            viewModel.setNavigateFromHome(false)
+                            navigateTo(R.id.action_trackSearchFragment_to_showMoreTrackFragment)
                         }
                     }
 
@@ -280,6 +289,73 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                         }
                     } else {
                         tvEpisode.forEach {
+                            val title = when {
+                                it.trackName.isNotEmpty() -> it.trackName
+                                else -> it.trackCensoredName
+                            }
+                            val price = when {
+                                it.trackPrice > 0.0 -> "${it.trackPrice} ${it.currency}"
+                                else -> "${it.collectionPrice} ${it.currency}"
+                            }
+
+                            bindableTrackNormal {
+                                id(it.trackId)
+                                imageUrl(it.artworkUrl100)
+                                trackTitle(title)
+                                price(price)
+                                trackGenre(it.primaryGenreName)
+                                onClick { _ ->
+                                    viewModel.viewDetails(it)
+                                    navigateTo(R.id.action_trackSearchFragment_to_trackDetailFragment)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // kind: podcast
+                if (podcasts.isNotEmpty()) {
+                    val moreThanThree = podcasts.size >= 3
+
+                    bindableHeaderViewMore {
+                        id("podcastHeader")
+                        headerText(getString(R.string.podcast))
+                        showViewMore(moreThanThree)
+                        onClick { _ ->
+                            viewModel.setSearchedTracks(podcasts)
+                            viewModel.setNavigateFromHome(false)
+                            navigateTo(R.id.action_trackSearchFragment_to_showMoreTrackFragment)
+                        }
+                    }
+
+                    if (moreThanThree) {
+                        carousel {
+                            id("podcastCarousel")
+                            paddingRes(R.dimen.activity_horizontal_margin_default)
+                            hasFixedSize(true)
+                            podcasts.map {
+                                val title = when {
+                                    it.trackName.isNotEmpty() -> it.trackName
+                                    else -> it.trackCensoredName
+                                }
+                                val price = when {
+                                    it.trackPrice > 0.0 -> "${it.trackPrice} ${it.currency}"
+                                    else -> "${it.collectionPrice} ${it.currency}"
+                                }
+                                BindableTrackGridBindingModel_()
+                                    .id(it.trackId)
+                                    .imageUrl(it.artworkUrl100)
+                                    .trackTitle(title)
+                                    .price(price)
+                                    .trackGenre(it.primaryGenreName)
+                                    .onClick { _ ->
+                                        viewModel.viewDetails(it)
+                                        navigateTo(R.id.action_trackSearchFragment_to_trackDetailFragment)
+                                    }
+                            }.let { models(it) }
+                        }
+                    } else {
+                        podcasts.forEach {
                             val title = when {
                                 it.trackName.isNotEmpty() -> it.trackName
                                 else -> it.trackCensoredName
@@ -357,6 +433,31 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
             viewModel.run {
                 selectSubscribe(TrackState::isLoading) {
                     swipeRefresh.isRefreshing = it
+                }
+
+                selectSubscribe(TrackState::searchText) {
+                    it.takeIf { it.isNotEmpty() }?.let {
+                        sharedPreferences?.let { sharedPref ->
+                            sharedPref.edit().let { editor ->
+                                editor.putString(Constants.LAST_SEARCH_KEYWORD, it)
+                                editor.apply()
+                            }
+                        }
+                    }
+                }
+
+                selectSubscribe(TrackState::searchResult) {
+                    it.tracks.takeIf { it.isNotEmpty() }?.let { searchedTracks ->
+                        val gson = Gson()
+                        val json = gson.toJson(searchedTracks)
+
+                        sharedPreferences?.let { sharedPref ->
+                            sharedPref.edit().let { editor ->
+                                editor.putString(Constants.LAST_RESULT_FROM_SEARCH, json)
+                                editor.apply()
+                            }
+                        }
+                    }
                 }
             }
         }

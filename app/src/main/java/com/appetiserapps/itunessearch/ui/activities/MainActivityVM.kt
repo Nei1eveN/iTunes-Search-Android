@@ -29,27 +29,28 @@ import java.util.Date
 import java.util.UUID
 
 @Parcelize
-data class TrackDetailArgs(val trackId: Int = 0) : Parcelable
+data class TrackDetailArgs(val trackId: Int? = null) : Parcelable
 
 @Parcelize
-data class MainActivityArgs(val trackId: Int = 0, val lastPageId: Int = 0) : Parcelable
+data class MainActivityArgs(val trackId: Int? = null, val lastPageId: Int? = null) : Parcelable
 
 /**
  * State for the activity which can be accessed by fragments
  * @param tracks list of tracks visited by the user
+ * @param searchedTracks
  * @param searchText user-input characters
  * @param searchResult response received from the API
  * @param isLoading loading value for showing refresh indicators
  * @param item [Track] object value for selected item from the list
  * */
 data class TrackState(
-    val lastViewedTrackId: Int? = null,
     val tracks: List<Track> = emptyList(),
     val searchedTracks: List<Track> = emptyList(),
     val searchText: String = "",
     val searchResult: SearchResult = SearchResult(),
     val isLoading: Boolean = false,
-    val item: Track? = null
+    val item: Track? = null,
+    val navigatedFromHome: Boolean = false
 ) : MvRxState
 
 class MainActivityVM(
@@ -68,12 +69,8 @@ class MainActivityVM(
 
         with(mainActivityArgs) {
             when {
-                trackId != 0 && lastPageId == R.id.trackDetailFragment -> {
-                    navigationController.navigateTo(lastPageId, TrackDetailArgs(trackId = trackId))
-                }
-                lastPageId != 0 && lastPageId == R.id.trackSearchFragment -> {
-                    navigationController.navigate(lastPageId)
-                }
+                (trackId != null) && lastPageId == R.id.trackDetailFragment -> navigationController.navigateTo(lastPageId, TrackDetailArgs(trackId = trackId))
+                lastPageId != null && lastPageId == R.id.trackSearchFragment -> navigationController.navigate(lastPageId)
             }
         }
     }
@@ -118,16 +115,6 @@ class MainActivityVM(
                     setRefreshing(false)
                 }
             }
-        }
-    }
-
-    /**
-     * set last viewed trackId to state
-     * @param trackId last viewed id from Track object or saved from sharedPreferences
-     * */
-    private fun setLastViewedTrackId(trackId: Int) {
-        setState {
-            copy(lastViewedTrackId = trackId)
         }
     }
 
@@ -185,7 +172,6 @@ class MainActivityVM(
                     setState {
                         copy(item = newTrack)
                     }
-                    newTrack?.trackId?.let { setLastViewedTrackId(it) }
                 } else {
                     otherTrack.apply {
                         previouslyVisited = true
@@ -210,6 +196,26 @@ class MainActivityVM(
             setState {
                 copy(item = item)
             }
+        }
+    }
+
+    /**
+     * set searchedTracks value to state
+     * @param searchedTracks value passed from tapping 'MORE' button on title header
+     * */
+    fun setSearchedTracks(searchedTracks: List<Track>) {
+        setState {
+            copy(searchedTracks = searchedTracks)
+        }
+    }
+
+    /**
+     * set navigatedFromHome value to state
+     * @param navigatedFromHome to be set when page is from TrackListFragment or TrackSearchFragment from tapping 'MORE' button on title header
+     * */
+    fun setNavigateFromHome(navigatedFromHome: Boolean) {
+        setState {
+            copy(navigatedFromHome = navigatedFromHome)
         }
     }
 

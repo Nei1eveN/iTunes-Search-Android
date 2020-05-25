@@ -262,8 +262,9 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
                 saveLastTrackIdToPreferences(sharedPreferences, track.trackId)
             } ?: run {
                 val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
-                saveLastTrackIdToPreferences(sharedPreferences, args.trackId)
-                viewModel.viewDetails(args.trackId)
+                val trackId = sharedPreferences?.getInt(Constants.TRACK_ID, 0) ?: 0
+                viewModel.viewDetails(args.trackId ?: trackId)
+                saveLastTrackIdToPreferences(sharedPreferences, args.trackId ?: trackId)
             }
         }
     }

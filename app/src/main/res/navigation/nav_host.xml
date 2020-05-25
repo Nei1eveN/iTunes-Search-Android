@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_trackListFragment_to_trackSearchFragment"
             app:destination="@id/trackSearchFragment" />
+        <action
+            android:id="@+id/action_trackListFragment_to_showMoreTrackFragment"
+            app:destination="@id/showMoreTrackFragment" />
     </fragment>
     <fragment
         android:id="@+id/trackSearchFragment"
@@ -30,5 +33,13 @@
         <action
             android:id="@+id/action_trackSearchFragment_to_trackDetailFragment"
             app:destination="@id/trackDetailFragment" />
+        <action
+            android:id="@+id/action_trackSearchFragment_to_showMoreTrackFragment"
+            app:destination="@id/showMoreTrackFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/showMoreTrackFragment"
+        android:name="com.appetiserapps.itunessearch.ui.fragments.ShowMoreTrackFragment"
+        android:label="ShowMoreTrackFragment"
+        tools:layout="@layout/fragment_track_list"/>
 </navigation>
