@@ -1,6 +1,7 @@
 package com.appetiserapps.itunessearch.ui.fragments
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,8 @@ import com.appetiserapps.itunessearch.bindableHeaderViewMore
 import com.appetiserapps.itunessearch.data.model.Track
 import com.appetiserapps.itunessearch.databinding.FragmentTrackDetailBinding
 import com.appetiserapps.itunessearch.extensions.toHtml
+import com.appetiserapps.itunessearch.extensions.toTrackLength
+import com.appetiserapps.itunessearch.ui.activities.MainActivity
 import com.appetiserapps.itunessearch.ui.activities.MainActivityVM
 import com.appetiserapps.itunessearch.ui.activities.TrackDetailArgs
 import com.appetiserapps.itunessearch.utils.Constants
@@ -40,7 +43,6 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
         get() = binding.epoxyRecyclerView
 
     var player: ExoPlayer? = null
-    private val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
 
     override fun epoxyController() = simpleController(viewModel) { state ->
         state.item?.let { track ->
@@ -88,7 +90,7 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
                     bindableDescriptionHorizontal {
                         id("price${track.collectionId}")
                         headerText(getString(R.string.price))
-                        detailsText(track.currency+" ${track.collectionPrice}")
+                        detailsText("${track.collectionPrice} ${track.currency}")
                     }
                     // collection description
                     bindableDescription {
@@ -156,24 +158,63 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
                                     }
                                 )
                             }
-                            // genre
+                        }
+                        Track.TrackKind.SONG.value -> {
+                            // artist
                             bindableDescriptionHorizontal {
-                                id("genre${track.trackId}")
-                                headerText(getString(R.string.genre))
-                                detailsText(track.primaryGenreName)
+                                id("artistName${track.trackId}")
+                                headerText(getString(R.string.artist))
+                                detailsText(track.artistName)
                             }
-                            // country / from
+                            // song duration / length
                             bindableDescriptionHorizontal {
-                                id("country${track.trackId}")
-                                headerText(getString(R.string.country))
-                                detailsText(track.country)
+                                id("trackInMillis${track.trackId}")
+                                headerText(getString(R.string.track_duration))
+                                detailsText(track.trackTimeMillis.toTrackLength())
                             }
-                            // price
+                            // track number
                             bindableDescriptionHorizontal {
-                                id("price${track.trackId}")
-                                headerText(getString(R.string.price))
-                                detailsText(track.currency+" ${track.collectionPrice}")
+                                id("trackNumber${track.trackId}")
+                                headerText(getString(R.string.track_no))
+                                detailsText(track.trackNumber.toString())
                             }
+                            // track collection name
+                            bindableDescriptionHorizontal {
+                                id("collection${track.trackId}")
+                                headerText(getString(R.string.album))
+                                detailsText(
+                                    when {
+                                        track.collectionName.isNotEmpty() -> track.collectionName
+                                        else -> track.collectionCensoredName
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    // genre
+                    bindableDescriptionHorizontal {
+                        id("genre${track.trackId}")
+                        headerText(getString(R.string.genre))
+                        detailsText(track.primaryGenreName)
+                    }
+                    // country / from
+                    bindableDescriptionHorizontal {
+                        id("country${track.trackId}")
+                        headerText(getString(R.string.country))
+                        detailsText(track.country)
+                    }
+                    // price
+                    bindableDescriptionHorizontal {
+                        id("price${track.trackId}")
+                        headerText(getString(R.string.price))
+                        detailsText("${when (track.kind) {
+                            Track.TrackKind.FEATURE_MOVIE.value, Track.TrackKind.TV_EPISODE.value -> track.collectionPrice
+                            else -> track.trackPrice
+                        }} ${track.currency}")
+                    }
+                    // track description / directed by / artist
+                    when (track.kind) {
+                        Track.TrackKind.FEATURE_MOVIE.value, Track.TrackKind.TV_EPISODE.value -> {
                             // track description
                             bindableDescription {
                                 id("description${track.trackId}")
@@ -196,13 +237,14 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
                     }
                 }
             }
-        } /*?: run {
-            viewModel.viewDetails(args.trackId)
-        }*/
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val addButton = (activity as MainActivity).binding.addButton
+        addButton.hide()
 
         player = context?.let { SimpleExoPlayer.Builder(it).build() }
         (player as SimpleExoPlayer?)?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
@@ -216,15 +258,17 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
 
         withState(viewModel) { state ->
             state.item?.let { track ->
-                saveLastTrackIdToPreferences(track.trackId)
+                val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
+                saveLastTrackIdToPreferences(sharedPreferences, track.trackId)
             } ?: run {
-                saveLastTrackIdToPreferences(args.trackId)
+                val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
+                saveLastTrackIdToPreferences(sharedPreferences, args.trackId)
                 viewModel.viewDetails(args.trackId)
             }
         }
     }
 
-    private fun saveLastTrackIdToPreferences(trackId: Int) {
+    private fun saveLastTrackIdToPreferences(sharedPreferences: SharedPreferences?, trackId: Int) {
         sharedPreferences?.let { sharedPref ->
             sharedPref.edit().let { editor ->
                 editor.putInt(Constants.TRACK_ID, trackId)

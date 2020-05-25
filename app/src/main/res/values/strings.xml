@@ -3,7 +3,8 @@
     <string name="track_placeholder_name">Track Name</string>
 
     <string name="previously_visited">Visited Tracks</string>
-    <string name="show_more">Show All</string>
+    <string name="visited_today">Today</string>
+    <string name="show_more">More</string>
 
     <!--WrapperTypes-->
     <string name="audiobook">Audiobook</string>
@@ -22,6 +23,10 @@
     <string name="price">Price</string>
     <string name="copyright">Copyright</string>
     <string name="collection">Collection</string>
+    <string name="album">Album</string>
+    <string name="artist">Artist</string>
+    <string name="track_no">Track #</string>
+    <string name="track_duration">Duration</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

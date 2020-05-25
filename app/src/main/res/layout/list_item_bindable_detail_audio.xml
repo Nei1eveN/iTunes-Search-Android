@@ -18,6 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         previewUrl="@{previewUrl}"
-        exoPlayer="@{player}"/>
+        exoPlayer="@{player}"
+        app:show_timeout="0"
+        app:hide_on_touch="false"/>
 
 </layout>

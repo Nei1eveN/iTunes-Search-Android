@@ -33,7 +33,9 @@
         android:background="?attr/selectableItemBackground"
         android:onClick="@{onClick}"
         android:paddingStart="@dimen/activity_horizontal_margin_default"
-        android:paddingEnd="@dimen/activity_horizontal_margin_default">
+        android:paddingEnd="@dimen/activity_horizontal_margin_default"
+        android:paddingTop="@dimen/activity_horizontal_padding_default"
+        android:paddingBottom="@dimen/activity_horizontal_padding_default">
 
         <ImageView
             android:id="@+id/trackImage"
@@ -42,6 +44,7 @@
             android:contentDescription="@null"
             android:scaleType="fitXY"
             app:imageTrackUrl="@{imageUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_audiotrack_light_green_96dp" />
@@ -70,6 +73,7 @@
             style="@style/AppTheme.TrackDescription"
             android:layout_width="0dp"
             android:text="@{trackGenre}"
+            app:layout_constraintBottom_toBottomOf="@+id/trackImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/titleText"
             app:layout_constraintTop_toBottomOf="@+id/trackPrice"
