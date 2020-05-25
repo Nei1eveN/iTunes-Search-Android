@@ -1,7 +1,5 @@
 package com.appetiserapps.itunessearch.ui.fragments
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
@@ -18,12 +16,15 @@ import com.appetiserapps.itunessearch.bindableDetailVideo
 import com.appetiserapps.itunessearch.bindableHeaderViewMore
 import com.appetiserapps.itunessearch.data.model.Track
 import com.appetiserapps.itunessearch.databinding.FragmentTrackDetailBinding
+import com.appetiserapps.itunessearch.extensions.getLastPageSharedPreferences
+import com.appetiserapps.itunessearch.extensions.getLastTrackId
+import com.appetiserapps.itunessearch.extensions.saveLastPageId
+import com.appetiserapps.itunessearch.extensions.saveLastTrackId
 import com.appetiserapps.itunessearch.extensions.toHtml
 import com.appetiserapps.itunessearch.extensions.toTrackLength
 import com.appetiserapps.itunessearch.ui.activities.MainActivity
 import com.appetiserapps.itunessearch.ui.activities.MainActivityVM
 import com.appetiserapps.itunessearch.ui.activities.TrackDetailArgs
-import com.appetiserapps.itunessearch.utils.Constants
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -255,25 +256,15 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
                 setLayoutManager(layoutManager)
             }
         }
-
+        val sharedPreferences = activity?.getLastPageSharedPreferences()
+        findNavController().currentDestination?.id?.let { sharedPreferences.saveLastPageId(it) }
         withState(viewModel) { state ->
             state.item?.let { track ->
-                val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
-                saveLastTrackIdToPreferences(sharedPreferences, track.trackId)
+                sharedPreferences.saveLastTrackId(track.trackId)
             } ?: run {
-                val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
-                saveLastTrackIdToPreferences(sharedPreferences, args.trackId)
-                viewModel.viewDetails(args.trackId)
-            }
-        }
-    }
-
-    private fun saveLastTrackIdToPreferences(sharedPreferences: SharedPreferences?, trackId: Int) {
-        sharedPreferences?.let { sharedPref ->
-            sharedPref.edit().let { editor ->
-                editor.putInt(Constants.TRACK_ID, trackId)
-                findNavController().currentDestination?.id?.let { editor.putInt(Constants.LAST_NAVIGATED_PAGE, it) }
-                editor.apply()
+                val trackId = sharedPreferences?.getLastTrackId() ?: 0
+                viewModel.viewDetails(args.trackId ?: trackId)
+                sharedPreferences.saveLastTrackId(args.trackId ?: trackId)
             }
         }
     }

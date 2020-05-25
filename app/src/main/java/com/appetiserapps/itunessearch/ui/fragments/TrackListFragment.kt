@@ -1,9 +1,7 @@
 package com.appetiserapps.itunessearch.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,11 +13,12 @@ import com.appetiserapps.itunessearch.bindableHeaderViewMore
 import com.appetiserapps.itunessearch.bindableTrackNormal
 import com.appetiserapps.itunessearch.data.model.Track
 import com.appetiserapps.itunessearch.databinding.FragmentTrackListBinding
+import com.appetiserapps.itunessearch.extensions.getLastPageSharedPreferences
+import com.appetiserapps.itunessearch.extensions.saveLastPageId
 import com.appetiserapps.itunessearch.extensions.toDateFormat
 import com.appetiserapps.itunessearch.ui.activities.MainActivity
 import com.appetiserapps.itunessearch.ui.activities.MainActivityVM
 import com.appetiserapps.itunessearch.ui.activities.TrackState
-import com.appetiserapps.itunessearch.utils.Constants
 import com.nei1even.adrcodingchallengelibrary.core.binding.EpoxyFragment
 import com.nei1even.adrcodingchallengelibrary.core.mvrx.simpleController
 import kotlinx.android.synthetic.main.toolbar_main.view.toolbar
@@ -49,7 +48,8 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                 }
             }
         } else {
-            val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited && it.date.toDateFormat() == Date().toDateFormat() }
+            val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited }
+            val visitedTracksToday = previouslyVisitedTracks.filter { it.date.toDateFormat() == Date().toDateFormat() }
             val atLeastOneVisited = previouslyVisitedTracks.isNotEmpty()
             val moreThanThree = previouslyVisitedTracks.size >= 3
             if (atLeastOneVisited) {
@@ -57,51 +57,65 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                     id("previouslyVisited")
                     headerText(getString(R.string.previously_visited))
                     showViewMore(moreThanThree)
-                    onClick { view ->
-                        Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
+                    onClick { _ ->
+                        viewModel.setNavigateFromHome(true)
+                        navigateTo(R.id.action_trackListFragment_to_showMoreTrackFragment)
                     }
                 }
 
-                bindableHeaderViewMore {
-                    id("visitedToday")
-                    headerText(getString(R.string.visited_today))
-                    showViewMore(false)
-                    onClick { view ->
-                        Toast.makeText(view.context, getString(R.string.previously_visited), Toast.LENGTH_SHORT).show()
+                if (visitedTracksToday.isNotEmpty()) {
+                    bindableHeaderViewMore {
+                        id("visitedToday")
+                        headerText(getString(R.string.visited_today))
+                        showViewMore(false)
+                        onClick { _ -> }
                     }
-                }
-
-                previouslyVisitedTracks.forEach {
-                    val title = when (it.wrapperType) {
-                        Track.WrapperType.AUDIOBOOK.value -> {
-                            when {
-                                it.collectionName.isNotEmpty() -> it.collectionName
-                                else -> it.collectionCensoredName
+                    visitedTracksToday.forEach {
+                        val title = when (it.wrapperType) {
+                            Track.WrapperType.AUDIOBOOK.value -> {
+                                when {
+                                    it.collectionName.isNotEmpty() -> it.collectionName
+                                    else -> it.collectionCensoredName
+                                }
+                            }
+                            else -> {
+                                when {
+                                    it.trackName.isNotEmpty() -> it.trackName
+                                    else -> it.trackCensoredName
+                                }
                             }
                         }
-                        else -> {
-                            when {
-                                it.trackName.isNotEmpty() -> it.trackName
-                                else -> it.trackCensoredName
+                        val price = when (it.wrapperType) {
+                            Track.WrapperType.AUDIOBOOK.value -> "${it.collectionPrice} ${it.currency}"
+                            else -> "${it.trackPrice} ${it.currency}"
+                        }
+                        bindableTrackNormal {
+                            id("today${it.trackId}")
+                            imageUrl(it.artworkUrl100)
+                            trackTitle(title)
+                            price(price)
+                            trackGenre(it.primaryGenreName)
+                            onClick { _ ->
+                                viewModel.viewDetails(it)
+                                navigateTo(R.id.action_trackListFragment_to_trackDetailFragment)
                             }
                         }
                     }
-                    val price = when (it.wrapperType) {
-                        Track.WrapperType.AUDIOBOOK.value -> "${it.collectionPrice} ${it.currency}"
-                        else -> "${it.trackPrice} ${it.currency}"
-                    }
-                    bindableTrackNormal {
-                        id("today${it.trackId}")
-                        imageUrl(it.artworkUrl100)
-                        trackTitle(title)
-                        price(price)
-                        trackGenre(it.primaryGenreName)
+                } else {
+                    bindableEmptyScreen {
+                        id("visitedTracksTodayEmptyScreen")
+                        text(getString(R.string.no_tracks_today))
+                        buttonVisible(false)
                         onClick { _ ->
-                            viewModel.viewDetails(it)
-                            navigateTo(R.id.action_trackListFragment_to_trackDetailFragment)
+                            viewModel.setNavigateFromHome(true)
+                            navigateTo(R.id.action_trackListFragment_to_showMoreTrackFragment)
                         }
                     }
                 }
+
+
+
+
             }
         }
     }
@@ -109,13 +123,8 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPreferences = activity?.getSharedPreferences(Constants.LAST_PAGE_SHARED_PREF, Context.MODE_PRIVATE)
-        sharedPreferences?.let { sharedPref ->
-            sharedPref.edit().let { editor ->
-                findNavController().currentDestination?.id?.let { editor.putInt(Constants.LAST_NAVIGATED_PAGE, it) }
-                editor.apply()
-            }
-        }
+        val sharedPreferences = activity?.getLastPageSharedPreferences()
+        findNavController().currentDestination?.id?.let { sharedPreferences.saveLastPageId(it) }
 
         val addButton = (activity as MainActivity).binding.addButton
         viewModel.selectSubscribe(TrackState::tracks) {
