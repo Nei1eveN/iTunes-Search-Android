@@ -220,12 +220,7 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
                             bindableDescription {
                                 id("description${track.trackId}")
                                 showHeader(false)
-                                detailsText(
-                                    when {
-                                        track.shortDescription.isNotEmpty() -> track.shortDescription.toHtml()
-                                        else -> track.longDescription.toHtml()
-                                    }
-                                )
+                                detailsText(track.longDescription.toHtml())
                             }
                             // directed by
                             bindableDescription {

@@ -123,7 +123,7 @@ class ShowMoreTrackFragment : EpoxyFragment<FragmentTrackListBinding>() {
                             trackGenre(it.primaryGenreName)
                             onClick { _ ->
                                 viewModel.viewDetails(it)
-                                navigateTo(R.id.action_trackSearchFragment_to_trackDetailFragment)
+                                navigateTo(R.id.action_showMoreTrackFragment_to_trackDetailFragment)
                             }
                         }
                     }
