@@ -60,6 +60,7 @@ open class Track(
     enum class TrackKind(val value: String) {
         FEATURE_MOVIE("feature-movie"),
         SONG("song"),
-        TV_EPISODE("tv-episode")
+        TV_EPISODE("tv-episode"),
+        PODCAST("podcast")
     }
 }

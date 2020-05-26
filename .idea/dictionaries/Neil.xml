@@ -2,10 +2,13 @@
   <dictionary name="Neil">
     <words>
       <w>audiobook</w>
+      <w>audiobooks</w>
       <w>bindable</w>
       <w>coroutines</w>
       <w>gson</w>
       <w>mvrx</w>
+      <w>podcast</w>
+      <w>podcasts</w>
       <w>skywalker</w>
       <w>snackbar</w>
       <w>swipeable</w>

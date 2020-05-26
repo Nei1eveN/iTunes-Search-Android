@@ -10,6 +10,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.airbnb.mvrx.MvRx
 import com.appetiserapps.itunessearch.R
+import com.appetiserapps.itunessearch.data.model.Track
+import com.appetiserapps.itunessearch.ui.activities.ExpandableTrackItem
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -60,3 +62,39 @@ fun Date.toDateFormat() : String {
     oldDateFormat.applyPattern(newDateFormat)
     return oldDateFormat.format(thisDate)
 }
+
+/**
+ * converts list [Track] into an expandable list item of title and list of tracks
+ *
+ * note: this can be converted into a dynamic type of usage,
+ * but it is up to your purpose
+ * */
+fun List<Track>.groupIntoTracksByDefaultDateFormat() : List<ExpandableTrackItem> {
+    val groupedHashMap = mutableMapOf<String, MutableSet<Track>>()
+
+    this.forEach {
+        val hashMapKey = it.date.toDateFormat()
+
+        if (groupedHashMap.containsKey(hashMapKey)) {
+            groupedHashMap[hashMapKey]?.add(it)
+        } else {
+            val trackSet = mutableSetOf<Track>()
+            trackSet.add(it)
+            groupedHashMap[hashMapKey] = trackSet
+        }
+    }
+
+    val consolidatedList = arrayListOf<ExpandableTrackItem>()
+    for (date in groupedHashMap.keys) {
+        val dateTrackItem = ExpandableTrackItem()
+        dateTrackItem.title = date
+        val tracks = mutableListOf<Track>()
+        groupedHashMap[date]?.iterator()?.forEach { track ->
+            tracks.add(track)
+            dateTrackItem.tracks = tracks
+        }
+        consolidatedList.add(dateTrackItem)
+    }
+    return consolidatedList
+}
+
