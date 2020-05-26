@@ -10,7 +10,9 @@ import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.activityViewModel
 import com.appetiserapps.itunessearch.R
 import com.appetiserapps.itunessearch.bindableEmptyScreen
+import com.appetiserapps.itunessearch.bindableExpandingHeader
 import com.appetiserapps.itunessearch.bindableHeaderViewMore
+import com.appetiserapps.itunessearch.bindableStaticDivider
 import com.appetiserapps.itunessearch.bindableTrackNormal
 import com.appetiserapps.itunessearch.data.model.Track
 import com.appetiserapps.itunessearch.databinding.FragmentTrackListBinding
@@ -40,36 +42,56 @@ class ShowMoreTrackFragment : EpoxyFragment<FragmentTrackListBinding>() {
 
     override fun epoxyController() = simpleController(viewModel) { state ->
         if (state.navigatedFromHome) {
-            val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited }.sortedByDescending { it.date }
-
-            previouslyVisitedTracks.forEach {
-                val title = when (it.wrapperType) {
-                    Track.WrapperType.AUDIOBOOK.value -> {
-                        when {
-                            it.collectionName.isNotEmpty() -> it.collectionName
-                            else -> it.collectionCensoredName
-                        }
-                    }
-                    else -> {
-                        when {
-                            it.trackName.isNotEmpty() -> it.trackName
-                            else -> it.trackCensoredName
-                        }
-                    }
-                }
-                val price = when (it.wrapperType) {
-                    Track.WrapperType.AUDIOBOOK.value -> "${it.collectionPrice} ${it.currency}"
-                    else -> "${it.trackPrice} ${it.currency}"
-                }
-                bindableTrackNormal {
-                    id("today${it.trackId}")
-                    imageUrl(it.artworkUrl100)
-                    trackTitle(title)
-                    price(price)
-                    trackGenre(it.primaryGenreName)
+            state.expandableItems.forEach { dateTrackItem ->
+                val dateTitle = dateTrackItem.title
+                val isTitleSelected = state.isExpanded && dateTitle == state.selectedDateTitle
+                bindableExpandingHeader {
+                    id("date$dateTitle")
+                    isExpanded(isTitleSelected)
+                    headerText(dateTitle)
                     onClick { _ ->
-                        viewModel.viewDetails(it)
-                        navigateTo(R.id.action_showMoreTrackFragment_to_trackDetailFragment)
+                        viewModel.setSelectedTitle(dateTitle)
+                        viewModel.toggleExpanded()
+                    }
+                }
+                bindableStaticDivider {
+                    id("divider${dateTitle}")
+                    sidePadding(!isTitleSelected)
+                    transparentBackground(true)
+                }
+                when {
+                    isTitleSelected -> {
+                        dateTrackItem.tracks.forEach {
+                            val title = when (it.wrapperType) {
+                                Track.WrapperType.AUDIOBOOK.value -> {
+                                    when {
+                                        it.collectionName.isNotEmpty() -> it.collectionName
+                                        else -> it.collectionCensoredName
+                                    }
+                                }
+                                else -> {
+                                    when {
+                                        it.trackName.isNotEmpty() -> it.trackName
+                                        else -> it.trackCensoredName
+                                    }
+                                }
+                            }
+                            val price = when (it.wrapperType) {
+                                Track.WrapperType.AUDIOBOOK.value -> "${it.collectionPrice} ${it.currency}"
+                                else -> "${it.trackPrice} ${it.currency}"
+                            }
+                            bindableTrackNormal {
+                                id("today${it.trackId}")
+                                imageUrl(it.artworkUrl100)
+                                trackTitle(title)
+                                price(price)
+                                trackGenre(it.primaryGenreName)
+                                onClick { _ ->
+                                    viewModel.viewDetails(it)
+                                    navigateTo(R.id.action_showMoreTrackFragment_to_trackDetailFragment)
+                                }
+                            }
+                        }
                     }
                 }
             }

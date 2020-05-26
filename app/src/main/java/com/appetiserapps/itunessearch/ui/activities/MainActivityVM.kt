@@ -22,6 +22,7 @@ import com.appetiserapps.itunessearch.extensions.getSearchResultJSONString
 import com.appetiserapps.itunessearch.extensions.getSearchResultList
 import com.appetiserapps.itunessearch.extensions.getViewMoreList
 import com.appetiserapps.itunessearch.extensions.getViewMoreTracks
+import com.appetiserapps.itunessearch.extensions.groupIntoTracksByDefaultDateFormat
 import com.appetiserapps.itunessearch.extensions.navigateTo
 import com.nei1even.adrcodingchallengelibrary.core.extensions.toUnmanaged
 import com.nei1even.adrcodingchallengelibrary.core.mvrx.MvRxViewModel
@@ -34,6 +35,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
 import java.util.UUID
+
+/**
+ * data class for setting the [title] as header and [tracks] as content
+ * @param title title of the [ExpandableTrackItem]
+ * @param tracks content of the [ExpandableTrackItem]
+ * */
+data class ExpandableTrackItem(
+    var title: String = "",
+    var tracks: List<Track> = emptyList()
+)
 
 /**
  * args for querying the [Track] object from the repository
@@ -75,7 +86,10 @@ data class TrackState(
     val searchResult: SearchResult = SearchResult(),
     val isLoading: Boolean = false,
     val item: Track? = null,
-    val navigatedFromHome: Boolean = false
+    val navigatedFromHome: Boolean = false,
+    val expandableItems: List<ExpandableTrackItem> = emptyList(),
+    val selectedDateTitle: String? = null,
+    val isExpanded: Boolean = false
 ) : MvRxState
 
 class MainActivityVM(
@@ -126,7 +140,31 @@ class MainActivityVM(
      * */
     private fun setTracks(tracks: List<Track>) {
         setState {
-            copy(tracks = tracks)
+            copy(
+                tracks = tracks,
+                expandableItems = tracks.groupIntoTracksByDefaultDateFormat()
+            )
+        }
+    }
+
+    /**
+     * changes isExpanded value to state
+     * */
+    fun toggleExpanded() {
+        setState {
+            copy(isExpanded = !isExpanded)
+        }
+    }
+
+    /**
+     * set selectedDateTitle value to state
+     * @param title title from expandable item [ExpandableTrackItem]
+     * */
+    fun setSelectedTitle(title: String?) {
+        setState {
+            copy(
+                selectedDateTitle = title
+            )
         }
     }
 
@@ -307,5 +345,4 @@ class MainActivityVM(
             )
         }
     }
-
 }
