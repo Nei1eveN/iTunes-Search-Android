@@ -81,7 +81,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                         hasFixedSize(true)
                         audioBooks.map {
                             BindableTrackGridBindingModel_()
-                                .id(it.trackId)
+                                .id("audiobook${it}")
                                 .imageUrl(it.artworkUrl100)
                                 .trackTitle(it.collectionName)
                                 .price("Collection Price: ${it.collectionPrice}")
@@ -95,7 +95,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                 } else {
                     audioBooks.forEach {
                         bindableTrackNormal {
-                            id(it.trackId)
+                            id("audiobook${it}")
                             imageUrl(it.artworkUrl100)
                             trackTitle(it.collectionName)
                             price("Collection Price: ${it.collectionPrice}")
@@ -118,7 +118,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
 
                 // kind: feature-movie
                 if (featureMovie.isNotEmpty()) {
-                    val moreThanThree = featureMovie.size >= 3
+                    val moreThanThree = featureMovie.size > 3
 
                     bindableHeaderViewMore {
                         id("featureMovieHeader")
@@ -145,7 +145,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                     else -> "${it.collectionPrice} ${it.currency}"
                                 }
                                 BindableTrackGridBindingModel_()
-                                    .id(it.trackId)
+                                    .id("movie${it}")
                                     .imageUrl(it.artworkUrl100)
                                     .trackTitle(title)
                                     .price(price)
@@ -168,7 +168,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                             }
 
                             bindableTrackNormal {
-                                id(it.trackId)
+                                id("movie${it}")
                                 imageUrl(it.artworkUrl100)
                                 trackTitle(title)
                                 price(price)
@@ -211,7 +211,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                     else -> "${it.collectionPrice} ${it.currency}"
                                 }
                                 BindableTrackGridBindingModel_()
-                                    .id(it.trackId)
+                                    .id("song$it")
                                     .imageUrl(it.artworkUrl100)
                                     .trackTitle(title)
                                     .price(price)
@@ -233,7 +233,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                 else -> "${it.collectionPrice} ${it.currency}"
                             }
                             bindableTrackNormal {
-                                id(it.trackId)
+                                id("song$it")
                                 imageUrl(it.artworkUrl100)
                                 trackTitle(title)
                                 price(price)
@@ -277,7 +277,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                     else -> "${it.collectionPrice} ${it.currency}"
                                 }
                                 BindableTrackGridBindingModel_()
-                                    .id(it.trackId)
+                                    .id("tvSeries$it")
                                     .imageUrl(it.artworkUrl100)
                                     .trackTitle(title)
                                     .price(price)
@@ -300,7 +300,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                             }
 
                             bindableTrackNormal {
-                                id(it.trackId)
+                                id("tvSeries$it")
                                 imageUrl(it.artworkUrl100)
                                 trackTitle(title)
                                 price(price)
@@ -344,7 +344,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                                     else -> "${it.collectionPrice} ${it.currency}"
                                 }
                                 BindableTrackGridBindingModel_()
-                                    .id(it.trackId)
+                                    .id("podcast$it")
                                     .imageUrl(it.artworkUrl100)
                                     .trackTitle(title)
                                     .price(price)
@@ -367,7 +367,7 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                             }
 
                             bindableTrackNormal {
-                                id(it.trackId)
+                                id("podcast$it")
                                 imageUrl(it.artworkUrl100)
                                 trackTitle(title)
                                 price(price)

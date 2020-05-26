@@ -49,7 +49,9 @@ fun Int.toTrackLength() : String {
     val seconds = (this / 1000) % 60
     val minutes = ((this - seconds) / 1000) / 60
 
-    return "$minutes:$seconds"
+    val convertedSeconds = if (seconds < 10) "0$seconds" else "$seconds"
+
+    return "$minutes:${convertedSeconds}"
 }
 
 /**

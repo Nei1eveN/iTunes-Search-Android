@@ -51,7 +51,7 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
             val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited }
             val visitedTracksToday = previouslyVisitedTracks.filter { it.date.toDateFormat() == Date().toDateFormat() }
             val atLeastOneVisited = previouslyVisitedTracks.isNotEmpty()
-            val moreThanThree = previouslyVisitedTracks.size >= 3
+            val moreThanThree = previouslyVisitedTracks.size > 3
             if (atLeastOneVisited) {
                 bindableHeaderViewMore {
                     id("previouslyVisited")
@@ -129,6 +129,7 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
         val addButton = (activity as MainActivity).binding.addButton
         viewModel.selectSubscribe(TrackState::tracks) {
             if (it.isNotEmpty()) addButton.show()
+            else addButton.hide()
         }
 
         binding.run {
