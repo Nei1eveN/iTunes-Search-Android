@@ -264,6 +264,9 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
         }
     }
 
+    /**
+     * releases the player when Lifecycle is onPause
+     * */
     override fun onPause() {
         super.onPause()
         player?.release()

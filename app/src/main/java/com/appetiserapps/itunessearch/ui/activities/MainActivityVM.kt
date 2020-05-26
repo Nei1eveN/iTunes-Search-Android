@@ -59,6 +59,8 @@ data class TrackDetailArgs(val trackId: Int? = null) : Parcelable
  * @param lastPageId last page navigated
  * @param lastSearchKey last word user searched
  * @param lastSearchedList last result of the list from the API upon search
+ * @param lastViewMoreTracks last viewed tracks from API result upon clicking 'MORE' button
+ * @param navigatedFromHome sets to true if previous destination is from TrackListFragment, otherwise false
  * */
 @Parcelize
 data class MainActivityArgs(
@@ -78,6 +80,10 @@ data class MainActivityArgs(
  * @param searchResult response received from the API
  * @param isLoading loading value for showing refresh indicators
  * @param item [Track] object value for selected item from the list
+ * @param navigatedFromHome sets to true if previous destination is from TrackListFragment, otherwise false
+ * @param expandableItems list of expanding items with title and content. see [ExpandableTrackItem]
+ * @param selectedDateTitle title of the selected expandable item. see [ExpandableTrackItem]
+ * @param isExpanded shows the content of the expandable item if value is true. see [ExpandableTrackItem]
  * */
 data class TrackState(
     val tracks: List<Track> = emptyList(),
