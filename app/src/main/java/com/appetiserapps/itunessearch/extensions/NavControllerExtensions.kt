@@ -34,7 +34,7 @@ fun NavController.navigateTo(actionId: Int, arg: Parcelable? = null) {
  * converts string to [Spanned] value
  * */
 @Suppress("DEPRECATION")
-fun String.toHtml() : Spanned {
+fun String.toHtml(): Spanned {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
     } else {
@@ -45,7 +45,7 @@ fun String.toHtml() : Spanned {
 /**
  * converts track.trackTimeMillis into minutes and seconds
  * */
-fun Int.toTrackLength() : String {
+fun Int.toTrackLength(): String {
     val seconds = (this / 1000) % 60
     val minutes = ((this - seconds) / 1000) / 60
 
@@ -57,8 +57,8 @@ fun Int.toTrackLength() : String {
 /**
  * converts default date format saved when user selected an item to Month, Day, and Year
  * */
-fun Date.toDateFormat() : String {
-    val oldDateFormat = SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy", Locale.getDefault())
+fun Date.toDateFormat(): String {
+    val oldDateFormat = SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH)
     val thisDate = oldDateFormat.parse(this.toString()) ?: Date()
     val newDateFormat = "MMM dd yyyy"
     oldDateFormat.applyPattern(newDateFormat)
@@ -71,7 +71,7 @@ fun Date.toDateFormat() : String {
  * note: this can be converted into a dynamic type of usage,
  * but it is up to your purpose
  * */
-fun List<Track>.groupIntoTracksByDefaultDateFormat() : List<ExpandableTrackItem> {
+fun List<Track>.groupIntoTracksByDefaultDateFormat(): List<ExpandableTrackItem> {
     val groupedHashMap = mutableMapOf<String, MutableSet<Track>>()
 
     this.forEach {
