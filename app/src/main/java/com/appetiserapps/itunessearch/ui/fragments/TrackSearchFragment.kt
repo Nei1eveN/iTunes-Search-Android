@@ -56,7 +56,8 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
 
         val searchTracks = state.searchResult.tracks
         if (searchTracks.isNotEmpty()) {
-            val audioBooks = searchTracks.filter { it.wrapperType == Track.WrapperType.AUDIOBOOK.value }
+            val audioBooks =
+                searchTracks.filter { it.wrapperType == Track.WrapperType.AUDIOBOOK.value }
             val tracks = searchTracks.filter { it.wrapperType == Track.WrapperType.TRACK.value }
 
             // wrapperType: audiobook
@@ -410,7 +411,10 @@ class TrackSearchFragment : EpoxyFragment<FragmentTrackSearchBinding>() {
                             actionId == EditorInfo.IME_ACTION_SEARCH || event.action == KeyEvent.ACTION_DOWN -> {
                                 when {
                                     this.text.toString().isEmpty() -> {
-                                        makeSafeSnackbar("Please enter a text", Snackbar.LENGTH_LONG)?.show()
+                                        makeSafeSnackbar(
+                                            "Please enter a text",
+                                            Snackbar.LENGTH_LONG
+                                        )?.show()
                                         viewModel.searchFor("")
                                     }
                                     else -> {

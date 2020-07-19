@@ -49,7 +49,8 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
             }
         } else {
             val previouslyVisitedTracks = state.tracks.filter { it.previouslyVisited }
-            val visitedTracksToday = previouslyVisitedTracks.filter { it.date.toDateFormat() == Date().toDateFormat() }
+            val visitedTracksToday =
+                previouslyVisitedTracks.filter { it.date.toDateFormat() == Date().toDateFormat() }
             val atLeastOneVisited = previouslyVisitedTracks.isNotEmpty()
             val moreThanThree = previouslyVisitedTracks.size > 3
             if (atLeastOneVisited) {
@@ -112,10 +113,6 @@ class TrackListFragment : EpoxyFragment<FragmentTrackListBinding>() {
                         }
                     }
                 }
-
-
-
-
             }
         }
     }

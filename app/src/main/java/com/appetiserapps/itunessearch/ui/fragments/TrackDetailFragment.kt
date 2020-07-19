@@ -57,7 +57,7 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
                 }
             }
 
-            when(track.wrapperType) {
+            when (track.wrapperType) {
                 Track.WrapperType.AUDIOBOOK.value -> {
                     bindableDetailAudio {
                         id("previewUrl${track.collectionId}")
@@ -151,7 +151,7 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
                             // track collection name
                             bindableDescriptionHorizontal {
                                 id("collection${track.trackId}")
-                                headerText(getString(R.string.from)+" ${getString(R.string.collection)}")
+                                headerText(getString(R.string.from) + " ${getString(R.string.collection)}")
                                 detailsText(
                                     when {
                                         track.collectionName.isNotEmpty() -> track.collectionName
@@ -208,10 +208,12 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
                     bindableDescriptionHorizontal {
                         id("price${track.trackId}")
                         headerText(getString(R.string.price))
-                        detailsText("${when (track.kind) {
-                            Track.TrackKind.FEATURE_MOVIE.value, Track.TrackKind.TV_EPISODE.value -> track.collectionPrice
-                            else -> track.trackPrice
-                        }} ${track.currency}")
+                        detailsText(
+                            "${when (track.kind) {
+                                Track.TrackKind.FEATURE_MOVIE.value, Track.TrackKind.TV_EPISODE.value -> track.collectionPrice
+                                else -> track.trackPrice
+                            }} ${track.currency}"
+                        )
                     }
                     // track description / directed by / artist
                     when (track.kind) {
@@ -243,7 +245,8 @@ class TrackDetailFragment : EpoxyFragment<FragmentTrackDetailBinding>() {
         addButton.hide()
 
         player = context?.let { SimpleExoPlayer.Builder(it).build() }
-        (player as SimpleExoPlayer?)?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+        (player as SimpleExoPlayer?)?.videoScalingMode =
+            C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
 
         binding.run {
             with(epoxyRecyclerView) {

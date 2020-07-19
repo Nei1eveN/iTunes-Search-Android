@@ -98,8 +98,10 @@ class ShowMoreTrackFragment : EpoxyFragment<FragmentTrackListBinding>() {
         } else {
             if (state.searchedTracks.isNotEmpty()) {
                 val searchedTracks = state.searchedTracks
-                val audioBooks = searchedTracks.filter { it.wrapperType == Track.WrapperType.AUDIOBOOK.value }
-                val tracks = searchedTracks.filter { it.wrapperType == Track.WrapperType.TRACK.value }
+                val audioBooks =
+                    searchedTracks.filter { it.wrapperType == Track.WrapperType.AUDIOBOOK.value }
+                val tracks =
+                    searchedTracks.filter { it.wrapperType == Track.WrapperType.TRACK.value }
 
                 // wrapperType: audiobook
                 if (audioBooks.isNotEmpty()) {
@@ -110,7 +112,11 @@ class ShowMoreTrackFragment : EpoxyFragment<FragmentTrackListBinding>() {
                         headerText(getString(R.string.audiobook))
                         showViewMore(moreThanThree)
                         onClick { view ->
-                            Toast.makeText(view.context, getString(R.string.audiobook), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                view.context,
+                                getString(R.string.audiobook),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
 
@@ -131,7 +137,8 @@ class ShowMoreTrackFragment : EpoxyFragment<FragmentTrackListBinding>() {
 
                 // wrapperType: track
                 if (tracks.isNotEmpty()) {
-                    val featureMovie = tracks.filter { it.kind == Track.TrackKind.FEATURE_MOVIE.value }
+                    val featureMovie =
+                        tracks.filter { it.kind == Track.TrackKind.FEATURE_MOVIE.value }
                     val song = tracks.filter { it.kind == Track.TrackKind.SONG.value }
                     val tvEpisode = tracks.filter { it.kind == Track.TrackKind.TV_EPISODE.value }
                     val podcasts = tracks.filter { it.kind == Track.TrackKind.PODCAST.value }

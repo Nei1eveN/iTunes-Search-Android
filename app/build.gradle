@@ -41,30 +41,57 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.3.0-alpha01'
+
+    // testing dependencies
     testImplementation 'junit:junit:4.13'
+    // Optional -- Robolectric environment
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'org.robolectric:robolectric:4.3.1'
+    // Optional -- Mockito framework
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    // Coroutines test
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7"
+    // Core library
+    androidTestImplementation 'androidx.test:core:1.2.0'
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    // Assertions
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.ext:truth:1.2.0'
+    androidTestImplementation 'com.google.truth:truth:1.0.1'
+    testImplementation 'com.google.truth:truth:1.0.1'
+    // Espresso dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    def epoxyVersion = '3.10.0'
+
+    def epoxyVersion = '3.11.0'
     kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
     def glideVersion = "4.11.0"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     // Coding Challenge Library (self-made library)
-    implementation 'com.github.Nei1eveN:ADR-Coding-Challenge:1.0.0'
-
-    // Google ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.11.4'
+    implementation 'com.github.Nei1eveN:ADR-Coding-Challenge:1.0.1'
+    /*implementation 'com.github.Nei1eveN:ADR-Coding-Challenge:test-dependencies-alpha-v1'*/
 }
