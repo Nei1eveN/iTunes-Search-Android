@@ -114,18 +114,26 @@ class MainActivityVM(
 
         with(mainActivityArgs) {
             when {
-                (trackId != null) && lastPageId == R.id.trackDetailFragment -> navigationController.navigateTo(lastPageId, TrackDetailArgs(trackId = trackId))
+                (trackId != null) && lastPageId == R.id.trackDetailFragment -> navigationController.navigateTo(
+                    lastPageId,
+                    TrackDetailArgs(trackId = trackId)
+                )
                 (lastSearchKey != null && lastSearchKey.isNotEmpty()) && (lastSearchedList != null && lastSearchedList.isNotEmpty()) && lastPageId != null && lastPageId == R.id.trackSearchFragment -> {
                     viewModelScope.launch {
                         setState {
-                            copy(searchResult = SearchResult(lastSearchedList.getSearchResultList().size, lastSearchedList.getSearchResultList()))
+                            copy(
+                                searchResult = SearchResult(
+                                    lastSearchedList.getSearchResultList().size,
+                                    lastSearchedList.getSearchResultList()
+                                )
+                            )
                         }
                         setSearchTerm(lastSearchKey)
                     }
                     navigationController.navigate(lastPageId)
                 }
                 (lastViewMoreTracks != null && lastViewMoreTracks.isNotEmpty()) &&
-                    lastPageId != null && lastPageId == R.id.showMoreTrackFragment -> {
+                        lastPageId != null && lastPageId == R.id.showMoreTrackFragment -> {
                     viewModelScope.launch {
                         setSearchedTracks(lastViewMoreTracks.getViewMoreList())
                     }
@@ -188,7 +196,10 @@ class MainActivityVM(
                             result.invoke().tracks.apply {
                                 forEach {
                                     it.apply {
-                                        artworkUrl100 = artworkUrl100.replace("100x100bb.jpg", "1000x1000bb.jpg")
+                                        artworkUrl100 = artworkUrl100.replace(
+                                            "100x100bb.jpg",
+                                            "1000x1000bb.jpg"
+                                        )
                                     }
                                 }
                             }
@@ -340,7 +351,15 @@ class MainActivityVM(
             val lastSearchedTrackString = sharedPref.getSearchResultJSONString()
             val lastViewMoreTracks = sharedPref.getViewMoreTracks()
             val navigatedFromHome = sharedPref.getNavigateFromHome()
-            val mainActivityArgs = viewModelContext.args as? MainActivityArgs ?: MainActivityArgs(trackId, lastNavigatedPageId, lastSearchKey, lastSearchedTrackString, lastViewMoreTracks, navigatedFromHome)
+            val mainActivityArgs = viewModelContext.args as? MainActivityArgs
+                ?: MainActivityArgs(
+                    trackId,
+                    lastNavigatedPageId,
+                    lastSearchKey,
+                    lastSearchedTrackString,
+                    lastViewMoreTracks,
+                    navigatedFromHome
+                )
             val realm = Realm.getDefaultInstance()
 
             return MainActivityVM(

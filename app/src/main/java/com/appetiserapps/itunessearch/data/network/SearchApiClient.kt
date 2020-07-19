@@ -22,7 +22,7 @@ class SearchApiClient : Interceptor {
     private var service: SearchAPI? = null
 
     init {
-        val logging =  LoggingInterceptor.Builder()
+        val logging = LoggingInterceptor.Builder()
             .setLevel(if (BuildConfig.DEBUG) Level.BODY else Level.NONE)
             .log(Log.INFO)
             .request("Request")
