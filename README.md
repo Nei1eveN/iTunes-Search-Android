@@ -3,6 +3,7 @@ Implementing
 - Kotlin Coroutines, MvRx, Realm Database, Retrofit, and Glide as core
 - Epoxy for recyclerview / UI complexities
 - Navigation Jetpack
+- Unit Tests using JUnit and Mockito
 
 Creating this application requires a knowledge on handling screen complexities, because a record can be of different wrapper types and kinds of tracks. To make this happen, I decided to meet the objectives with the libraries mentioned above. The app requirements are the following:
 
